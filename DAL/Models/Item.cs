@@ -12,6 +12,6 @@ namespace DAL.Models
         public ICollection<Feature>? Features { get; set; }
         public ICollection<FeatureItem>? FeatureItem { get; set; }
 
-        public ICollection<Characteristic>?  Characteristics {get; set; }
+        //public ICollection<Characteristic>?  Characteristics {get; set; }
     }
 }

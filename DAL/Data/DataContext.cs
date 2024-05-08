@@ -71,17 +71,7 @@ namespace DAL.Data
          );
 
             modelBuilder.Entity<Item>().HasData(
-                new Item { Id = 1, Name = "Anna", Characteristics = new ICollection<Characteristic> {
-                   new Characteristic
-                {
-                    Id = 1,
-                    Name = "Characteristic 1",
-                    Features = new List<Feature>
-                    {
-                        new Feature {Id = 6, Name = "Women", CharacteristicsId = 1 }
-                    }
-                 }
-                },
+                new Item { Id = 1, Name = "Anna"},
                  new Item { Id = 2, Name = "Bob"},
                  new Item { Id = 3, Name = "July" }
                 );
