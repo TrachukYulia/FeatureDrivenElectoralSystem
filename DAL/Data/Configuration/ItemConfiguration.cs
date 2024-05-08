@@ -13,7 +13,6 @@ namespace DAL.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Item> builder)
         {
-            builder.Property(o => o.Name).HasMaxLength(500).IsRequired();
         }
     }
 }

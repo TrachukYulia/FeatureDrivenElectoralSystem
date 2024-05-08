@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 { 
     public interface IItemService
     {
-        IEnumerable<ItemRequest> GetAll();
+        IEnumerable<ItemRespond> GetAll();
         void Create(ItemRequest item);
         ItemRequest Get(int id);
         void Update(ItemRequest itemRequest, int id);

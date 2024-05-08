@@ -16,9 +16,9 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ItemRequest>> GetAll()
+        public ActionResult<IEnumerable<ItemRespond>> GetAll()
         {
-            IEnumerable<ItemRequest> itemRequest = _itemService.GetAll();
+            IEnumerable<ItemRespond> itemRequest = _itemService.GetAll();
             return Ok(itemRequest);
         }
 

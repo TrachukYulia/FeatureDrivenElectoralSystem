@@ -9,7 +9,9 @@ namespace BLL.Interfaces
 {
     public interface IFeatureService
     {
-        IEnumerable<FeatureRequest> GetAll();
+        IEnumerable<FeatureModel> GetAll();
+        IEnumerable<FeatureRespond> GetFeatureName();
+
         void Create(FeatureRequest item);
         FeatureRequest Get(int id);
         void Update(FeatureRequest item, int id);

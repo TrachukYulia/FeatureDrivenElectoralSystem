@@ -31,12 +31,13 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public IEnumerable<ItemRequest> GetAll()
+        public IEnumerable<ItemRespond> GetAll()
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();
+
             if (items is null)
                 throw new NotFoundException("List is empty");
-            return _mapper.Map<IEnumerable<ItemRequest>>(items);
+            return _mapper.Map<IEnumerable<ItemRespond>>(items);
         }
         public ItemRequest Get(int id)
         {

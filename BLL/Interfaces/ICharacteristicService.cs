@@ -9,9 +9,9 @@ namespace BLL.Interfaces
 {
     public interface ICharacteristicService
     {
-        IEnumerable<CharacteristicRequest> GetAll();
+        IEnumerable<CharacteristicRespond> GetAll();
         void Create(CharacteristicRequest characteristicRequest);
-        CharacteristicRequest Get(int id);
+        CharacteristicRespond Get(int id);
         void Update(CharacteristicRequest characteristicRequest, int id);
         void Delete(int id);
     }

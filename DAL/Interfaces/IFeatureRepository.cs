@@ -9,6 +9,5 @@ namespace DAL.Interfaces
 {
     public interface IFeatureRepository : IRepository<Feature>
     {
-
     }
 }

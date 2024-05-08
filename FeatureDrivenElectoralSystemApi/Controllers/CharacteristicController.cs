@@ -15,29 +15,33 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CharacteristicRequest>> GetAll()
+        public ActionResult<IEnumerable<CharacteristicRespond>> GetAll()
         {
-            IEnumerable<CharacteristicRequest> characteristicRequests = _characteristicService.GetAll();
+            IEnumerable<CharacteristicRespond> characteristicRequests = _characteristicService.GetAll();
             return Ok(characteristicRequests);
         }
 
         [HttpPost]
-        public ActionResult CreateFesture(CharacteristicRequest characteristicRequest)
+        public ActionResult CreateCharacteristic(CharacteristicRequest characteristicRequest)
         {
+            if (characteristicRequest == null)
+            {
+                throw new ArgumentNullException();
+            }
             _characteristicService.Create(characteristicRequest);
             return Ok();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CharacteristicRequest> GetFeatureById(int id)
+        public ActionResult<CharacteristicRespond> GetCharacteristicById(int id)
         {
-            CharacteristicRequest characteristicRequest = _characteristicService.Get(id);
+            CharacteristicRespond characteristicRequest = _characteristicService.Get(id);
 
             return Ok(characteristicRequest);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateFeature(int id, [FromBody] CharacteristicRequest characteristicRequest)
+        public ActionResult UpdateCharacteristic(int id, [FromBody] CharacteristicRequest characteristicRequest)
         {
             _characteristicService.Update(characteristicRequest, id);
 

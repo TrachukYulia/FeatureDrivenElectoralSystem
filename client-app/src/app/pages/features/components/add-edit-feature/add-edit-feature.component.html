@@ -1,0 +1,41 @@
+<div mat-dialog-content class="content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Feature Form </h1>
+    </div>    
+    <form [formGroup]="featureForm" (ngSubmit)="onFormSubmit()"> 
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label> Feature Name</mat-label>
+                <input matInput type="text" formControlName ="featureName" required>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-form-field appearance="outline" required>
+                <mat-label>Select</mat-label>
+                <!-- <mat-select required [(ngModel)]="selectedCharacteristicId" name="characteristicId" (change)="onCharacteristicChange()">
+                    
+                    <mat-option *ngFor="let characteristic of characteristics" [value]="characteristic.id">{{ characteristic.Name }}
+                </mat-option> -->
+                <mat-select [(value)]="selectedCharacteristicId" (change)="onCharacteristicChange()" required formControlName="characteristicId" >
+                    <mat-option *ngFor="let characteristic of characteristics" [value]="characteristic.id">
+                      {{ characteristic.name  }}
+                    </mat-option>
+                  </mat-select >
+                  <!-- <mat-error *ngIf="featureForm.get('characteristicId').invalid && featureForm.get('characteristicId').touched">
+                    Characteristic selection is required.
+                  </mat-error> -->
+                <!-- </mat-select> -->
+              </mat-form-field>
+        </div>
+    <div class="modal-footer">
+        <div mat-dialog-actions class="action">
+            <!-- <button type="button" class="btn btn-secondary" [mat-dialog-close]>Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button> -->
+            <button mat-flat-button color="accent" [mat-dialog-close]>Close</button>
+            <button mat-raised-button color="primary" type="submit">{{featureData? 'Update': 'Add'}}</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+  

@@ -8,8 +8,7 @@ namespace DAL.Models
 {
     public class Characteristic: BaseEntity
     {
-        public int ItemId {get ; set; } 
-        public Item? Item { get ; set; }
+        public string? Name { get; set; }
         public ICollection<Feature>? Features { get; set; }  
     }
 }

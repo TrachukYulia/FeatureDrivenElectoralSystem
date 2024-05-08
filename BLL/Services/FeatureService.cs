@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL.Interfaces;
 using BLL.Exception;
+using System.Reflection.PortableExecutable;
 
 namespace BLL.Services
 {
@@ -30,12 +31,39 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public IEnumerable<FeatureRequest> GetAll()
+        public IEnumerable<FeatureModel> GetAll()
         {
             var features = _unitOfWork.GetRepository<Feature>().GetAll();
+            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+            var items = _unitOfWork.GetRepository<Item>().GetAll();
+
             if (features is null)
                 throw new NotFoundException("List is empty");
-            return _mapper.Map<IEnumerable<FeatureRequest>>(features);
+            var featureModels = _mapper.Map<List<FeatureModel>>(features);
+            foreach (var featureModel in featureModels)
+            {
+              //  var itemNames = items.Where(item => item.Features.Any(f => f.Name == featureModel.FeatureName)).Select(item => item.Name).ToList();
+                //     var characteristicName = features.Where(y => characteristic.Any(x => x.Id == y.CharacteristicsId)).Select(r => r.Name).First();
+                var featureId = features.First(f => f.Name == featureModel.FeatureName)?.Id;
+                var characteristicId = features.FirstOrDefault(f => f.Name == featureModel.FeatureName)?.CharacteristicsId;
+                var characteristicName = characteristics.FirstOrDefault(ch => ch.Id == characteristicId)?.Name;
+               /// featureModel.ItemNames = itemNames;
+                featureModel.CharacteristicName = characteristicName;
+               
+            }
+            return featureModels;
+                //_mapper.Map<IEnumerable<FeatureModel>>(features);
+        }
+        public IEnumerable<FeatureRespond> GetFeatureName()
+        {
+
+            var features = _unitOfWork.GetRepository<Feature>().GetAll();
+          
+            var featureModels = _mapper.Map<List<FeatureRespond>>(features);
+
+            return featureModels;
+            //_mapper.Map<IEnumerable<FeatureModel>>(features);
         }
         public FeatureRequest Get(int id)
         {

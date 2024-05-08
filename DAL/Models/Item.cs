@@ -8,6 +8,10 @@ namespace DAL.Models
 {
     public class Item: BaseEntity
     {
+        public string? Name { get; set; }
+        public ICollection<Feature>? Features { get; set; }
+        public ICollection<FeatureItem>? FeatureItem { get; set; }
+
         public ICollection<Characteristic>?  Characteristics {get; set; }
     }
 }

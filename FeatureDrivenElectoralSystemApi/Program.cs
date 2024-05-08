@@ -23,6 +23,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddCors();
+
 
 
 //var mapperConfig = new MapperConfiguration(mc =>
@@ -32,7 +34,13 @@ builder.Services.AddScoped<IItemService, ItemService>();
 //IMapper mapper = mapperConfig.CreateMapper();
 //builder.Services.AddSingleton(mapper);
 var app = builder.Build();
-
+//app.UseCors(builder => builder.WithOrigins("http://127.0.0.1:4200"));
+app.UseCors(options =>
+{
+    options.AllowAnyHeader();
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -45,5 +53,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapFallbackToFile("/index.html");
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.Run();

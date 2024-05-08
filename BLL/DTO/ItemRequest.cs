@@ -9,6 +9,7 @@ namespace BLL.DTO
     public class ItemRequest
     {
         public string? Name { get; set; }
+       
 
     }
 }

@@ -9,18 +9,25 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
     [ApiController]
     public class FeatureController : ControllerBase
     {
-        private  IFeatureService _featureService;
+        private IFeatureService _featureService;
         public FeatureController(IFeatureService featureService) {
             _featureService = featureService;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<FeatureRequest>> GetAll()
+        public ActionResult<IEnumerable<FeatureModel>> GetAll()
         {
-            IEnumerable<FeatureRequest> featureRequests = _featureService.GetAll();
+            var featureRequests = _featureService.GetAll();
             return Ok(featureRequests);
         }
 
+        [HttpGet]
+        [Route("/name")]
+        public ActionResult<IEnumerable<FeatureRespond>> GetFeatureName()
+        {
+            var featureRequests = _featureService.GetFeatureName();
+            return Ok(featureRequests);
+        }
         [HttpPost]
         public ActionResult CreateFesture(FeatureRequest featureRequest)
         {

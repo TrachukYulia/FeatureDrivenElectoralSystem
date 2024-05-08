@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using DAL.Data;
 using DAL.Interfaces;
 using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
     public class FeatureRepository : BaseRepository<Feature>, IFeatureRepository
     {
+
         public FeatureRepository(DataContext context) : base(context)
         {
         }
