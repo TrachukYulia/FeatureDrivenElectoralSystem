@@ -37,7 +37,7 @@ export class FeaturesComponent implements OnInit {
   ngOnInit(): void {
     this.getFeaturesList();
   }
-  openAddEditCharForm(){
+  openAddEditItemForm(){
    const dialogRef = this._dialog.open(AddEditFeatureComponent);
    dialogRef.afterClosed().subscribe({
     next: (val) =>{
@@ -61,7 +61,7 @@ export class FeaturesComponent implements OnInit {
       error: console.log,
     })
   }
-  deleteCharacteristics(id: number)
+  deleteFeature(id: number)
   {
     this._featureService.deleteFeature(id).subscribe({
       next: (res) => {

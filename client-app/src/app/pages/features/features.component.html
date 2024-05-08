@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-end mt-3">
       <!-- <a routerLink="/characteristics/add" class="btn btn-primary">Add Characteristic</a> -->
   
-      <button class="btn btn-primary" type="button" (click)="openAddEditCharForm()">
+      <button class="btn btn-primary" type="button" (click)="openAddEditItemForm()">
         Add Feature
       </button>
     </div>
@@ -25,7 +25,7 @@
               <button mat-icon-button color="primary" (click)="openEditForm(row)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="deleteCharacteristics(row.id)">
+              <button mat-icon-button color="warn" (click)="deleteFeature(row.id)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

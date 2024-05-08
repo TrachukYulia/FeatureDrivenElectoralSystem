@@ -1,1 +1,23 @@
-<p>add-edit-item works!</p>
+<div mat-dialog-content class="content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Item Form </h1>
+    </div>    
+    <form [formGroup]="itemForm" (ngSubmit)="onFormSubmit()"> 
+        <div class="row">
+            <mat-form-field appearance="outline">
+                <mat-label> Item Name</mat-label>
+                <input matInput type="text" formControlName ="name" required>
+            </mat-form-field>
+        </div>
+    <div class="modal-footer">
+        <div mat-dialog-actions class="action">
+            <!-- <button type="button" class="btn btn-secondary" [mat-dialog-close]>Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button> -->
+            <button mat-flat-button color="accent" [mat-dialog-close]>Close</button>
+            <button mat-raised-button color="primary" type="submit">{{featureData? 'Update': 'Add'}}</button>
+        </div>
+    </div>
+  </form>
+</div>
+
+  
