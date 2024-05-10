@@ -11,20 +11,12 @@
         </div>
         <div class="row">
             <mat-form-field appearance="outline" required>
-                <mat-label>Select</mat-label>
-                <!-- <mat-select required [(ngModel)]="selectedCharacteristicId" name="characteristicId" (change)="onCharacteristicChange()">
-                    
-                    <mat-option *ngFor="let characteristic of characteristics" [value]="characteristic.id">{{ characteristic.Name }}
-                </mat-option> -->
+                <mat-label> Select </mat-label>
                 <mat-select [(value)]="selectedCharacteristicId" (change)="onCharacteristicChange()" required formControlName="characteristicId" >
                     <mat-option *ngFor="let characteristic of characteristics" [value]="characteristic.id">
                       {{ characteristic.name  }}
                     </mat-option>
                   </mat-select >
-                  <!-- <mat-error *ngIf="featureForm.get('characteristicId').invalid && featureForm.get('characteristicId').touched">
-                    Characteristic selection is required.
-                  </mat-error> -->
-                <!-- </mat-select> -->
               </mat-form-field>
         </div>
     <div class="modal-footer">

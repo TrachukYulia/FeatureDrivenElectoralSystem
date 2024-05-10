@@ -15,6 +15,8 @@ import { FeaturesService } from '../sevrices/features.service';
 import { CharacteristicsService } from '../sevrices/characteristics.service';
 import { AddEditItemComponent } from './components/add-edit-item/add-edit-item.component';
 import { ItemService } from '../sevrices/item.service';
+import { Characteristic } from '../models/characteristic.model';
+import { Features } from '../models/features.model';
 @Component({
   selector: 'app-items',
   standalone: true,
@@ -24,7 +26,13 @@ import { ItemService } from '../sevrices/item.service';
   templateUrl: './items.component.html',
   styleUrl: './items.component.css'
 })
-export class ItemsComponent {
+export class ItemsComponent implements OnInit{
+  itemName!: string;
+  selectedFeatures: { [key: number]: number } = {};
+  characteristics: Characteristic[] = [];
+  // features: Features[] = []
+  features: any = {};
+
   displayedColumns: string[] = ['id', 'name', 'action'];
   dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,11 +40,14 @@ export class ItemsComponent {
 
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
+    private _charService: CharacteristicsService,
     private _coreService: CoreService,
     private _itemService: ItemService
   ){}
 
   ngOnInit(): void {
+    this.getCharacteristicsList();
+    this.getFeaturesList();
     this.getItemsList();
   }
   openAddEditItemForm(){
@@ -48,6 +59,25 @@ export class ItemsComponent {
       }
     }
    })
+  }
+   getCharacteristicsList() {
+    this._charService.getCharacteristics().subscribe({
+      next: (res) => {
+        this.characteristics = res;
+        console.log(res);
+      },
+      error: console.log,
+    })
+  }
+
+  getFeaturesList() {
+    this._featureService.getFeatures().subscribe({
+      next: (res) => {
+        this.features = res;
+        console.log(res);
+      },
+      error: console.log,
+    })
   }
   // ngOnInit(): void {
   //   throw new Error('Method not implemented.');

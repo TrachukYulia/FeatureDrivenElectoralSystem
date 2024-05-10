@@ -34,7 +34,7 @@ namespace BLL.Services
         public IEnumerable<FeatureModel> GetAll()
         {
             var features = _unitOfWork.GetRepository<Feature>().GetAll();
-            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+            //var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
             var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
             var items = _unitOfWork.GetRepository<Item>().GetAll();
 

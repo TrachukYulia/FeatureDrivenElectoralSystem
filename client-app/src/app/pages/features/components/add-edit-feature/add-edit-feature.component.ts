@@ -31,7 +31,7 @@ export class AddEditFeatureComponent implements OnInit{
   //  feature: addFeature = { id: 0, name: '', characteristicId: 0 };
   
   selectedCharacteristicId!: FormControl;
-  characteristics: Characteristic[] = [];
+    characteristics: Characteristic[] = [];
   featureForm: FormGroup;
     constructor(private _fb: FormBuilder,
       private _featureService: FeaturesService,

@@ -4,6 +4,7 @@ using BLL.Exception;
 using BLL.Interfaces;
 using DAL.Interfaces;
 using DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace BLL.Services
             if (itemRequest is null)
                 throw new ArgumentNullException(nameof(itemRequest), message: "Object is empty");
             var item = _mapper.Map<Item>(itemRequest);
+            //foreach (var characteristicId in item.SelectedFeatures.Keys)
+            //{
+            //    var featureId = item.SelectedFeatures[characteristicId];
+            //    _context.ItemFeatures.Add(new ItemFeature { ItemId = item.ItemId, FeatureId = featureId });
+            //}
             _unitOfWork.GetRepository<Item>().Create(item);
             _unitOfWork.Save();
         }

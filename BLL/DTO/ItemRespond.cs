@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace BLL.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<FeatureItem> FeatureItem { get; set; }
         //public ICollection<string> FeaturesName { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 export interface Features {
+    featureId: number;
     featureName: string;
-    characteristicName: string
+    characteristicName: string;
+    characteristicId: number;
 }

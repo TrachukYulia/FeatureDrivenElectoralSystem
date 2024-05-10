@@ -20,6 +20,8 @@ namespace DAL.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Characteristic> Characteristics { get; set; }
         public DbSet<Feature> Features { get; set; }
+        public DbSet<FeatureItem> FeatureItem { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }

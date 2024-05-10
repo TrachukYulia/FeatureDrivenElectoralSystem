@@ -13,6 +13,6 @@ namespace DAL.Models
         public int CharacteristicsId { get; set; }  
         public Characteristics Characteristic { get; set; }
         public ICollection<Item>? Items { get; set; }
-       public ICollection<FeatureItem>? FeatureItem { get; set; }
+        public ICollection<FeatureItem>? FeatureItem { get; set; }
     }
 }

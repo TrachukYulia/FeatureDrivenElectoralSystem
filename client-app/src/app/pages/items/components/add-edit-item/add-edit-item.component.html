@@ -1,23 +1,45 @@
 <div mat-dialog-content class="content">
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="exampleModalLabel">Item Form </h1>
+  </div>
+  <form [formGroup]="itemForm" (ngSubmit)="onFormSubmit()">
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label> Item Name</mat-label>
+        <input matInput type="text" formControlName="nameOfItem" required>
+      </mat-form-field>
+    </div>
     <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Item Form </h1>
-    </div>    
-    <form [formGroup]="itemForm" (ngSubmit)="onFormSubmit()"> 
-        <div class="row">
-            <mat-form-field appearance="outline">
-                <mat-label> Item Name</mat-label>
-                <input matInput type="text" formControlName ="name" required>
-            </mat-form-field>
-        </div>
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Characteristics </h1>
+    </div>
+    <div class="row">
+      <div *ngFor="let characteristic of characteristics">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">{{ characteristic.name }} </h1>
+
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>{{ characteristic.name }}</mat-label>
+          <mat-select formControlName="{{characteristic.name}}">
+            <mat-option *ngFor="let feature of featuresForCharacteristic2(characteristic.name)" 
+            [value]="feature.featureId">
+              {{ feature.featureName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+        <mat-form-field appearance="fill">
+          <mat-label>{{ characteristic.name }}</mat-label>
+          <mat-select formControlName="{{characteristic.name}}">
+            <mat-option *ngFor="let feature of featuresForCharacteristic2(characteristic.name) " [value]="feature">
+              {{ feature.featureName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
     <div class="modal-footer">
-        <div mat-dialog-actions class="action">
-            <!-- <button type="button" class="btn btn-secondary" [mat-dialog-close]>Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button> -->
-            <button mat-flat-button color="accent" [mat-dialog-close]>Close</button>
-            <button mat-raised-button color="primary" type="submit">{{featureData? 'Update': 'Add'}}</button>
-        </div>
+      <div mat-dialog-actions class="action">
+        <button mat-flat-button color="accent" [mat-dialog-close]>Close</button>
+        <button mat-raised-button color="primary" type="submit">{{itemData? 'Update': 'Add'}}</button>
+      </div>
     </div>
   </form>
 </div>
-
-  

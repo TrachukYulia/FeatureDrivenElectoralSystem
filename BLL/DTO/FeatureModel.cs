@@ -12,7 +12,7 @@ namespace BLL.DTO
         public int Id { get; set; }
         public string? FeatureName { get; set; }
         //public IEnumerable<IEnumerable<string>?> Features { get; set; }
-        // public int CharacteristicsId { get; set; }
+        public int CharacteristicsId { get; set; }
         // public ICollection<string>? ItemName { get; set; }
        // public string? ItemName { get; set; }
         //public List<string?> ItemNames { get; internal set; }
