@@ -25,6 +25,11 @@ namespace BLL
             CreateMap<Item, FeatureModel>();
             //    .ForMember(dest => dest.ItemName, opt => opt.MapFrom(src => src.Features.Select(f => f.Name))); //eto
 
+            CreateMap<ItemRespond, Item>()
+                    .ForMember(dest => dest.FeatureItem, opt => opt.MapFrom(src => src.FeatureItem))
+                    .ReverseMap();
+
+            
 
 
 

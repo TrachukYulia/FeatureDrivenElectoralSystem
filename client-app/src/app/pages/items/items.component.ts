@@ -8,7 +8,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 import { FeaturesService } from '../sevrices/features.service';
@@ -16,7 +15,6 @@ import { CharacteristicsService } from '../sevrices/characteristics.service';
 import { AddEditItemComponent } from './components/add-edit-item/add-edit-item.component';
 import { ItemService } from '../sevrices/item.service';
 import { Characteristic } from '../models/characteristic.model';
-import { Features } from '../models/features.model';
 @Component({
   selector: 'app-items',
   standalone: true,
@@ -51,15 +49,15 @@ export class ItemsComponent implements OnInit{
     this.getItemsList();
   }
   openAddEditItemForm(){
-   const dialogRef = this._dialog.open(AddEditItemComponent);
-   dialogRef.afterClosed().subscribe({
-    next: (val) =>{
-      if(val) {
-        this.getItemsList();
-      }
-    }
-   })
-  }
+    const dialogRef = this._dialog.open(AddEditItemComponent);
+    dialogRef.afterClosed().subscribe({
+     next: (val) =>{
+       if(val) {
+         this.getItemsList();
+       }
+     }
+    })
+   }
    getCharacteristicsList() {
     this._charService.getCharacteristics().subscribe({
       next: (res) => {
@@ -79,9 +77,7 @@ export class ItemsComponent implements OnInit{
       error: console.log,
     })
   }
-  // ngOnInit(): void {
-  //   throw new Error('Method not implemented.');
-  // }
+  
   getItemsList(){
     this._itemService.getItems().subscribe({
       next: (res) => {

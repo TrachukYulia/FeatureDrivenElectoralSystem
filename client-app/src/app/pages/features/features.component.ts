@@ -47,9 +47,7 @@ export class FeaturesComponent implements OnInit {
     }
    })
   }
-  // ngOnInit(): void {
-  //   throw new Error('Method not implemented.');
-  // }
+
   getFeaturesList(){
     this._featureService.getFeatures().subscribe({
       next: (res) => {

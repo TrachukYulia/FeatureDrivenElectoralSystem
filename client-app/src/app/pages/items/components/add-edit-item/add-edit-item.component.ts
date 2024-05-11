@@ -18,7 +18,9 @@ import { FeaturesService } from '../../../sevrices/features.service';
 import { CharacteristicsService } from '../../../sevrices/characteristics.service';
 import { Features } from '../../../models/features.model';
 import { RouterFeatures } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { Observable, combineLatest, map, startWith } from 'rxjs';
+import { ItemFeatureRequest } from '../../../models/feature-item.model';
+import { SelectedFeature } from '../../../models/selected-feature-model';
 @Component({
   selector: 'app-add-edit-item',
   standalone: true,
@@ -33,18 +35,12 @@ export class AddEditItemComponent implements OnInit {
 
   constructor(private _fb: FormBuilder,
     private _dialogRef: MatDialogRef<AddEditItemComponent>,
-    @Inject(MAT_DIALOG_DATA) public itemData: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private _coreService: CoreService,
     private _itemService: ItemService,
     private _featureService: FeaturesService,
     private _charService: CharacteristicsService
-
   ) {
-    // this.itemForm = this._fb.group({
-    //   id: Number,
-    //   name: '',
-    //   characteristics: this.getCharacteristicsList();
-    // })
     this.itemForm = this._fb.group({
       name: ['', Validators.required]
     });
@@ -52,67 +48,111 @@ export class AddEditItemComponent implements OnInit {
   itemName!: string;
   selectedFeatures: { characteristicId: number, featureId: number }[] = [];
   characteristics: Characteristic[] = [];
+  featureItems: ItemFeatureRequest[] = [];
   features: Features[] = []
   // newItem: Item = { nameOfItem: '', featureItem: [] };
   selectedFeatureIds: { [key: number]: number } = {};
+  //selectedFeatures: { [key: string]: number } = {};
+  items: any[] = [];
+  newItemName: string = '';
+  displayedColumns: string[] = ['name'];
+  //formControls: { [key: string]: FormControl } = {};
+  formControls: Record<any, any> = {};
 
-  getCharacteristicsList() {
-    this._charService.getCharacteristics().subscribe({
-      next: (res) => {
-        this.characteristics = res;
-        console.log(res);
-      },
-      error: console.log,
-    })
-  }
 
-  getFeaturesList() {
-    this._featureService.getFeatures().subscribe({
-      next: (res) => {
-        this.features = res;
-        console.log(res);
-      },
-      error: console.log,
-    })
-  }
-  // onFormSubmit() {
-  //   if (this.itemForm.valid) {
-  //     if (this.itemData) {
-  //       const formValue = this.itemForm.value;
-  //       const itemFeatures: any[] = [];
-  //       this.characteristics.forEach(characteristic => {
-  //         const featureId = formValue[characteristic.id];
-  //         if (featureId) {
-  //           const itemFeature = {
-  //             characteristicId: characteristic.id,
-  //             featureId: featureId
-  //           };
-  //           console.log('submit');
-  //           console.log(itemFeature);
-  //           itemFeatures.push(itemFeature);
-  //         }
-  //       });
-  //     }
-  //     else {
-  //       this._itemService.addItem(this.itemForm.value).subscribe({
-  //         next: (val: any) => {
-  //           this._coreService.openSnackBar('Feature added successfully!')
-  //           // this.newItem = { name: '', featureItem: [] };
-  //           // this.selectedFeatures = [];
-
-  //           this._dialogRef.close(true);
-  //         },
-  //         error: (err: any) => {
-  //           console.error(err);
-  //         },
-  //       })
-  //     }
-  //   }
+  // getCharacteristicsList() {
+  //   this._charService.getCharacteristics().subscribe({
+  //     next: (res) => {
+  //       this.characteristics = res;
+  //       console.log(res);
+  //     },
+  //     error: console.log,
+  //   })
   // }
+
+  // getFeaturesList() {
+  //   this._featureService.getFeatures().subscribe({
+  //     next: (res) => {
+  //       this.features = res;
+  //       console.log(res);
+  //     },
+  //     error: console.log,
+  //   })
+  // }
+ 
+  // featuresForCharacteristic(characteristicName: string): Observable<any[]> {
+  //   const characteristic = this.characteristics.find(c => c.name === characteristicName);
+  //   return this.formControls[characteristicName].valueChanges.pipe(
+  //     startWith(''),
+  //     map((value: string) => this.filterFeatures(characteristic, value))
+  //   );
+  // }
+  addItem() {
+    console.log(this.itemForm.value.featureItem.id)
+    const newItem = {
+      name: this.itemForm.value.name,
+      featureItems: this.featureItems
+    };
+    for (const characteristic of this.characteristics) {
+      const featureId2 = this.getFeatureId(characteristic.name)
+     // this.formControls[controlName].value;
+      newItem.featureItems.push({
+       // characteristicId: characteristic.id,
+        featureId: 0
+      });
+    }
+    this.itemForm.value.featureItem.id
+    console.log(newItem)
+
+    this._itemService.addItem(newItem).subscribe((data: any) => {
+      console.log('Item added successfully:', data);
+    });
+  }
+  
+filterFeatures(characteristic: any, value: string): any[] {
+  const filterValue = (value as string);
+  return characteristic.features.filter((feature: any) => feature.name.includes(filterValue));
+}
+getSelectValue(event: Event): string {
+  const value = (event.target as HTMLSelectElement)?.value;
+  return value;
+}
+
+onFeatureSelect(featureId: string, characteristicName: string): void {
+console.log(featureId)
+  //this.selectedFeatures[characteristicName] = featureId;
+}
   onFormSubmit() {
+    console.log(this.itemForm)
     if (this.itemForm.valid) {
-      if (this.itemData) {
-        this._itemService.updateItem(this.itemData.id, this.itemForm.value).subscribe({
+      console.log(this.itemForm.value.name)
+      console.log(this.itemForm.value.featureItem)
+
+      const newItem = {
+        name: this.itemForm.value.name,
+        featureItem: this.featureItems
+      };
+      // for (const characteristic of this.characteristics) {
+      //   const featureId2 = this.getFeatureId(characteristic.name)
+      //   newItem.featureItem.push({
+      //     featureId: 0
+      //   });
+      // }
+      for (const characteristic of this.characteristics) {
+        // Находим запись в selectedFeatures, соответствующую текущей характеристике
+        const selectedFeature = this.selectedFeatures.find(item => item.characteristicId === characteristic.id);
+      
+        // Если запись найдена, добавляем ее featureId в массив featureItem объекта newItem
+        if (selectedFeature) {
+          newItem.featureItem.push({
+            featureId: selectedFeature.featureId
+          });
+        }
+      }
+      console.log(newItem)
+
+      if (this.data) {
+        this._itemService.updateItem(this.data.id, newItem).subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Item updated successfully!')
             console.log(val);
@@ -124,9 +164,9 @@ export class AddEditItemComponent implements OnInit {
         })
       }
       else {
-        this._itemService.addItem(this.itemForm.value).subscribe({
+        this._itemService.addItem(newItem).subscribe({
           next: (val: any) => {
-            this._coreService.openSnackBar('Characteristic added successfully!')
+            this._coreService.openSnackBar('Item added successfully!')
             console.log(val);
             this._dialogRef.close(true);
           },
@@ -151,21 +191,47 @@ export class AddEditItemComponent implements OnInit {
   }
   createForm() {
 
-    const formControls: Record<any, any> = {};
-    formControls['nameOfItem'] = ['', Validators.required]; // Поле имени
+    this.formControls['name'] = ['', Validators.required]; // Поле имени
     this.characteristics.forEach(characteristic => {
-      formControls[characteristic.name] = ['', Validators.required]; // Используйте null, чтобы не предвыбрать значение
+      this.formControls[characteristic.name] = ['', Validators.required]; // Используйте null, чтобы не предвыбрать значение
     });
+    console.log(this.formControls);
+    this.itemForm = this._fb.group(this.formControls);
+    
+    this.itemForm.valueChanges.subscribe((formValue: any) => {
+      console.log(formValue)
 
+  Object.keys(formValue).forEach(key => {
+    const value = formValue[key];
+    if (typeof value === 'object' && value !== null && 'id' in value) {
+      const characteristicId = value.characteristicsId;
+      const featureId = value.id;
+      
+      // Найдем индекс характеристики в массиве selectedFeatures
+      const index = this.selectedFeatures.findIndex(item => item.characteristicId === characteristicId);
+      if (index !== -1) {
+        // Если характеристика уже существует в массиве selectedFeatures, обновим значение featureId
+        this.selectedFeatures[index].featureId = featureId;
+      } else {
+        // Если характеристика еще не существует в массиве selectedFeatures, добавим новую запись
+        this.selectedFeatures.push({ characteristicId, featureId });
+      }
+    }
+  });
 
-    console.log(formControls);
-    this.itemForm = this._fb.group(formControls);
+  console.log('characteristicId:', this.selectedFeatures);
+    });
+  
   }
 
-  featuresForCharacteristic2(name: string): Features[] {
+  getfeaturesForCharacteristic2(name: string): Features[] {
     return this.features.filter(feature => feature.characteristicName === name);
   }
-  featuresForCharacteristic(characteristicId: number): Features[] {
+  getFeatureId(name: string): number[]{
+    const arr = this.features.filter(feature => feature.characteristicName === name);
+    return arr.map(f=> f.id);
+  }
+  getfeaturesForCharacteristic(characteristicId: number): Features[] {
     return this.features.filter(feature => feature.characteristicId === characteristicId);
   }
 
@@ -181,7 +247,7 @@ export class AddEditItemComponent implements OnInit {
     this.loadFeatures();
     this.createForm();
 
-    this.itemForm.patchValue(this.itemData);
+    this.itemForm.patchValue(this.data);
 
   }
 }

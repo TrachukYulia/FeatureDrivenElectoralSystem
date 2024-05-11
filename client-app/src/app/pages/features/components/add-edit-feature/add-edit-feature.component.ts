@@ -16,6 +16,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { Characteristic } from '../../../models/characteristic.model';
 import { CharacteristicsService } from '../../../sevrices/characteristics.service';
 import { Features } from '../../../models/features.model';
+
 import { addFeature } from '../../../models/add-feature';
 
 @Component({
@@ -28,7 +29,6 @@ import { addFeature } from '../../../models/add-feature';
 })
 export class AddEditFeatureComponent implements OnInit{
  
-  //  feature: addFeature = { id: 0, name: '', characteristicId: 0 };
   
   selectedCharacteristicId!: FormControl;
     characteristics: Characteristic[] = [];

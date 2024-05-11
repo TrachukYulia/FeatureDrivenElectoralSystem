@@ -1,5 +1,5 @@
 export interface Features {
-    featureId: number;
+    id: number;
     featureName: string;
     characteristicName: string;
     characteristicId: number;

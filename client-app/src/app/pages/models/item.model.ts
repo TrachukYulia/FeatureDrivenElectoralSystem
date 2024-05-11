@@ -1,11 +1,8 @@
-import { FeatureItem } from "./item-feature.model";
+import { ItemFeatureRequest } from "./feature-item.model";
 
 export interface Item {
     // id: number,
-
-    nameOfItem: string,
+    name: string,
     // selectedFeatures: { [key: number]: number };
-    featureItem?: FeatureItem[]; // Массив черт элемента
-    
-    
+    featureItem?: ItemFeatureRequest[]; // Массив черт элемента
 }

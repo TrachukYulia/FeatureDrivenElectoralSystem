@@ -10,6 +10,5 @@ namespace BLL.DTO
     public class ItemFeatureRequest
     {
         public int FeatureId { get; set; }
-        public int ItemId { get; set; }
     }
 }
