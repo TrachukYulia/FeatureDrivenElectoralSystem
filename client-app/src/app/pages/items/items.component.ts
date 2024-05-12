@@ -15,12 +15,16 @@ import { CharacteristicsService } from '../sevrices/characteristics.service';
 import { AddEditItemComponent } from './components/add-edit-item/add-edit-item.component';
 import { ItemService } from '../sevrices/item.service';
 import { Characteristic } from '../models/characteristic.model';
+import { Item } from '../models/item.model';
+import { CharacteristicFeatureMapping } from '../models/ch-feature-map.model';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 @Component({
   selector: 'app-items',
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule],
+    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule,],
   templateUrl: './items.component.html',
   styleUrl: './items.component.css'
 })
@@ -28,25 +32,88 @@ export class ItemsComponent implements OnInit{
   itemName!: string;
   selectedFeatures: { [key: number]: number } = {};
   characteristics: Characteristic[] = [];
-  // features: Features[] = []
   features: any = {};
-
-  displayedColumns: string[] = ['id', 'name', 'action'];
+  items: any = [];
+  displayedColumns: string[] = ['id', 'name', 'action'];;
   dataSource!: MatTableDataSource<any>;
+  characteristicsMap: Map<number, string[]> = new Map<number, string[]>();
+  characteristicFeatureMapping: CharacteristicFeatureMapping[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
     private _charService: CharacteristicsService,
     private _coreService: CoreService,
     private _itemService: ItemService
   ){}
+  getHeaderRowDef(): string[] {
+    console.log('Characteristic:', this.characteristics.map(ch=>ch.name))
+    this.displayedColumns = this.displayedColumns.concat(this.characteristics.map(ch=>ch.name))
+    console.log('displayedColumns:', this.displayedColumns)
 
+    return this.displayedColumns;
+  }
+  getColumnDef(): string[] {
+    const tempArr : string[] = ['id', 'name', 'action'];
+    tempArr.forEach(i=> {
+      this.displayedColumns.push(i)
+    })
+    console.log('Characteristic:', this.characteristics)
+    this.characteristics.forEach(ch=> {
+      this.displayedColumns.push(ch.name)
+    })
+    console.log('displayedColumns:', this.displayedColumns)
+    return this.displayedColumns;
+  }
   ngOnInit(): void {
-    this.getCharacteristicsList();
-    this.getFeaturesList();
+    this.loadCharacteristics();
+    this.loadFeatures();
     this.getItemsList();
+  }
+  loadCharacteristics() {
+    this._charService.getCharacteristics().subscribe({
+      next: (res) => {
+        this.characteristics = res;
+       console.log('Characteristics is load:', this.characteristics)
+       this.characteristics.forEach(characteristic => {
+        this.displayedColumns.push(characteristic.name);
+      });
+      },
+      error: console.log,
+    })
+  }
+  getItemValue(item: any, characteristicId: number): string {
+   
+      const featureItem = item.featureItem.map((x: { featureId: any; })=>x.featureId);
+      console.log('We find featureItem', featureItem)
+      const matchingFeatureIds = featureItem.filter((featureId: any) => {
+        // Проверяем, есть ли в массиве features объект с данным characteristicId и featureId
+        console.log('featureId', featureId)
+        console.log(this.features)
+        const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
+        this.features.forEach((f: { characteristicsId: number; id: any; })=>{
+          if(f.characteristicsId === characteristicId && f.id === featureId)
+            console.log('characteristicsId', characteristicId);
+        })
+        return a; 
+      });
+      if (matchingFeatureIds.length > 0) {
+        console.log('Найдены featureId, которые соответствуют characteristicId:', matchingFeatureIds);
+        const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
+        return matchingFeachure.featureName;
+      } else {
+        console.log('Не найдено соответствующих featureId для characteristicId:', characteristicId);
+        return '-';
+      } 
+  }
+  loadFeatures() {
+    this._featureService.getFeatures().subscribe({
+      next: (res) => {
+        this.features = res;
+        console.log('Features is load:', this.features)
+      },
+      error: console.log,
+    })
   }
   openAddEditItemForm(){
     const dialogRef = this._dialog.open(AddEditItemComponent);
@@ -84,7 +151,8 @@ export class ItemsComponent implements OnInit{
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        console.log(res);
+        this.items = res;
+        console.log('Item is loaded', res);
       },
       error: console.log,
     })
@@ -93,7 +161,7 @@ export class ItemsComponent implements OnInit{
   {
     this._itemService.deleteItem(id).subscribe({
       next: (res) => {
-       this._coreService.openSnackBar('Feature deleted!')
+       this._coreService.openSnackBar('Item deleted!')
        this.getItemsList();
       },
       error: console.log,
@@ -111,4 +179,38 @@ export class ItemsComponent implements OnInit{
     }
    })
    }
+   buildCharacteristicsMap(items: Item[]): void {
+    items.forEach(item => {
+      item.featureItem?.forEach(featureItem => {
+        const characteristicId = this.getCharacteristicId(featureItem.featureId);
+        if (characteristicId) {
+          const characteristicValues = this.characteristicsMap.get(characteristicId);
+          if (characteristicValues) {
+            characteristicValues.push(this.getFeatureName(featureItem.featureId));
+          } else {
+            this.characteristicsMap.set(characteristicId, [this.getFeatureName(featureItem.featureId)]);
+          }
+        }
+      });
+    });
+  }
+  
+  getFeatureValueForCharacteristic(item: Item, characteristicId: number): string[] {
+    return this.characteristicsMap.get(characteristicId) || [];
+  }
+
+  getCharacteristicId(featureId: number): number | undefined {
+    const mapping = this.characteristicFeatureMapping.find(m => m.featureId === featureId);
+    return mapping ? mapping.characteristicId : undefined;
+  }
+
+  getCharacteristicName(characteristicId: number): string {
+    const characteristic = this.characteristics.find(x => x.id == characteristicId);
+    return characteristic ? characteristic.name : '';
+  }
+
+  getFeatureName(featureId: number): string {
+    const feature = this.features.find((x: { id: number; }) => x.id == featureId);
+    return feature ? feature.name : '';
+  }
 }

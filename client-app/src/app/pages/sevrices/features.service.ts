@@ -22,6 +22,9 @@ export class FeaturesService {
  getFeatures(): Observable<any> {
   return this.http.get('https://localhost:7059/api/Feature');
 }
+getById( id: number): Observable<any> {
+  return this.http.get('https://localhost:7059/api/Feature/'+id);
+}
 updateFeature( id: number, featureData: any): Observable<any> {
   return this.http.put('https://localhost:7059/api/Feature/'+id, featureData);
 }

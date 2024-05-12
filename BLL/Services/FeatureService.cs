@@ -65,7 +65,7 @@ namespace BLL.Services
             return featureModels;
             //_mapper.Map<IEnumerable<FeatureModel>>(features);
         }
-        public FeatureRequest Get(int id)
+        public FeatureNameRespond Get(int id)
         {
             var feature = _unitOfWork.GetRepository<Feature>().Get(id);
 
@@ -74,7 +74,7 @@ namespace BLL.Services
                 throw new NotFoundException("Object with id {id} not found");
             }
 
-            return _mapper.Map<FeatureRequest>(feature);
+            return _mapper.Map<FeatureNameRespond>(feature);
         }
         public void Update(FeatureRequest item, int id)
         {

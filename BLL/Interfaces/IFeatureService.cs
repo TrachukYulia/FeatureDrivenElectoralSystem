@@ -13,7 +13,7 @@ namespace BLL.Interfaces
         IEnumerable<FeatureRespond> GetFeatureName();
 
         void Create(FeatureRequest item);
-        FeatureRequest Get(int id);
+        FeatureNameRespond Get(int id);
         void Update(FeatureRequest item, int id);
         void Delete(int id);
 

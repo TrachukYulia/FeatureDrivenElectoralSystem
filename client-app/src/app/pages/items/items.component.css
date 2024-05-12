@@ -5,12 +5,17 @@
   .main-body {
     text-align: center;
     padding-top: 20px;
-    margin: 0px auto;
-    max-width: 40%;
-    .mat-form-field {
+    margin: auto; /* Центрирование по горизонтали */
+    max-width: 80%;
+    /* .mat-form-field {
       width: 15%;
-    }
+    } */
   }
+  .my-table{
+    width: 80%; /* Ширина контейнера */
+    height: 60%; /* Высота контейнера */
+    margin: auto; /* Центрирование по горизонтали */
+    overflow: auto; /* Добавление полос прокрутки при необходимости */  }
   
   .action {
     display: flex;

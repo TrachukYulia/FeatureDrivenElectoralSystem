@@ -41,7 +41,7 @@ namespace BLL.Services
             _unitOfWork.Save();
         }
 
-        public CharacteristicRespond Get(int id)
+        public CharacteristicNameRespond Get(int id)
         {
             var characteristic = _unitOfWork.GetRepository<Characteristic>().Get(id);
 
@@ -50,7 +50,7 @@ namespace BLL.Services
                 throw new NotFoundException("Object with id {id} not found");
             }
 
-            return _mapper.Map<CharacteristicRespond>(characteristic);
+            return _mapper.Map<CharacteristicNameRespond>(characteristic);
         }
 
         public IEnumerable<CharacteristicRespond> GetAll()

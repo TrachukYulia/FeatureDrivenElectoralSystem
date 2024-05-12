@@ -33,9 +33,9 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CharacteristicRespond> GetCharacteristicById(int id)
+        public ActionResult<CharacteristicNameRespond> GetCharacteristicById(int id)
         {
-            CharacteristicRespond characteristicRequest = _characteristicService.Get(id);
+            CharacteristicNameRespond characteristicRequest = _characteristicService.Get(id);
 
             return Ok(characteristicRequest);
         }

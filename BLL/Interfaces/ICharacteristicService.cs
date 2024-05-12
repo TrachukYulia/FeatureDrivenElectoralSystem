@@ -11,7 +11,7 @@ namespace BLL.Interfaces
     {
         IEnumerable<CharacteristicRespond> GetAll();
         void Create(CharacteristicRequest characteristicRequest);
-        CharacteristicRespond Get(int id);
+        CharacteristicNameRespond Get(int id);
         void Update(CharacteristicRequest characteristicRequest, int id);
         void Delete(int id);
     }

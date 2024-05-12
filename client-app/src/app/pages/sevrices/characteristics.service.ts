@@ -24,6 +24,10 @@ export class CharacteristicsService {
  getCharacteristics(): Observable<any> {
   return this.http.get('https://localhost:7059/api/Characteristic');
 }
+
+getById( id: number): Observable<any> {
+  return this.http.get('https://localhost:7059/api/Characteristic/'+id);
+}
 updateCharacteristics( id: number, data: any): Observable<any> {
   return this.http.put('https://localhost:7059/api/Characteristic/'+id, data);
 }

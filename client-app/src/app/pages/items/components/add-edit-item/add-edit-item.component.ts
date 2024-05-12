@@ -50,43 +50,12 @@ export class AddEditItemComponent implements OnInit {
   characteristics: Characteristic[] = [];
   featureItems: ItemFeatureRequest[] = [];
   features: Features[] = []
-  // newItem: Item = { nameOfItem: '', featureItem: [] };
   selectedFeatureIds: { [key: number]: number } = {};
-  //selectedFeatures: { [key: string]: number } = {};
   items: any[] = [];
   newItemName: string = '';
   displayedColumns: string[] = ['name'];
-  //formControls: { [key: string]: FormControl } = {};
   formControls: Record<any, any> = {};
 
-
-  // getCharacteristicsList() {
-  //   this._charService.getCharacteristics().subscribe({
-  //     next: (res) => {
-  //       this.characteristics = res;
-  //       console.log(res);
-  //     },
-  //     error: console.log,
-  //   })
-  // }
-
-  // getFeaturesList() {
-  //   this._featureService.getFeatures().subscribe({
-  //     next: (res) => {
-  //       this.features = res;
-  //       console.log(res);
-  //     },
-  //     error: console.log,
-  //   })
-  // }
- 
-  // featuresForCharacteristic(characteristicName: string): Observable<any[]> {
-  //   const characteristic = this.characteristics.find(c => c.name === characteristicName);
-  //   return this.formControls[characteristicName].valueChanges.pipe(
-  //     startWith(''),
-  //     map((value: string) => this.filterFeatures(characteristic, value))
-  //   );
-  // }
   addItem() {
     console.log(this.itemForm.value.featureItem.id)
     const newItem = {
@@ -95,9 +64,7 @@ export class AddEditItemComponent implements OnInit {
     };
     for (const characteristic of this.characteristics) {
       const featureId2 = this.getFeatureId(characteristic.name)
-     // this.formControls[controlName].value;
       newItem.featureItems.push({
-       // characteristicId: characteristic.id,
         featureId: 0
       });
     }
@@ -120,7 +87,6 @@ getSelectValue(event: Event): string {
 
 onFeatureSelect(featureId: string, characteristicName: string): void {
 console.log(featureId)
-  //this.selectedFeatures[characteristicName] = featureId;
 }
   onFormSubmit() {
     console.log(this.itemForm)
@@ -132,12 +98,6 @@ console.log(featureId)
         name: this.itemForm.value.name,
         featureItem: this.featureItems
       };
-      // for (const characteristic of this.characteristics) {
-      //   const featureId2 = this.getFeatureId(characteristic.name)
-      //   newItem.featureItem.push({
-      //     featureId: 0
-      //   });
-      // }
       for (const characteristic of this.characteristics) {
         // Находим запись в selectedFeatures, соответствующую текущей характеристике
         const selectedFeature = this.selectedFeatures.find(item => item.characteristicId === characteristic.id);

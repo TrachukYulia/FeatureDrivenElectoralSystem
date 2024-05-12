@@ -40,9 +40,22 @@ namespace BLL.Services
         public IEnumerable<ItemRespond> GetAll()
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+
 
             if (items is null)
                 throw new NotFoundException("List is empty");
+            //var itemDetails = items.Select(item => new ItemRespond
+            //{
+            //    Name = item.Name,
+            //    CharacteristicValues = characteristics.Select(characteristic =>
+            //        featureItems
+            //            .Where(fi => fi.ItemId == item.Id && fi.Feature.CharacteristicsId == characteristic.Id)
+            //            .Select(fi => fi.Feature.Name)
+            //            .FirstOrDefault() ?? "N/A"
+            //).ToList()
+            //}).ToList();
             return _mapper.Map<IEnumerable<ItemRespond>>(items);
         }
         public ItemRequest Get(int id)

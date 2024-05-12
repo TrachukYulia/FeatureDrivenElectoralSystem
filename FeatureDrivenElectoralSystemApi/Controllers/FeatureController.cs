@@ -36,13 +36,13 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<FeatureRequest> GetFeatureById(int id)
+        public ActionResult<FeatureNameRespond> GetFeatureById(int id)
         {
-            FeatureRequest featureRequest = _featureService.Get(id);
+            FeatureNameRespond featureRequest = _featureService.Get(id);
 
             return Ok(featureRequest);
         }
-
+                
         [HttpPut("{id}")]
         public ActionResult UpdateFeature(int id, [FromBody] FeatureRequest featureRequest)
         {
