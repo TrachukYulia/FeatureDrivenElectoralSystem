@@ -85,11 +85,7 @@ export class ItemsComponent implements OnInit{
   getItemValue(item: any, characteristicId: number): string {
    
       const featureItem = item.featureItem.map((x: { featureId: any; })=>x.featureId);
-      console.log('We find featureItem', featureItem)
       const matchingFeatureIds = featureItem.filter((featureId: any) => {
-        // Проверяем, есть ли в массиве features объект с данным characteristicId и featureId
-        console.log('featureId', featureId)
-        console.log(this.features)
         const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
         this.features.forEach((f: { characteristicsId: number; id: any; })=>{
           if(f.characteristicsId === characteristicId && f.id === featureId)
@@ -97,12 +93,16 @@ export class ItemsComponent implements OnInit{
         })
         return a; 
       });
-      if (matchingFeatureIds.length > 0) {
-        console.log('Найдены featureId, которые соответствуют characteristicId:', matchingFeatureIds);
+      if (matchingFeatureIds.length = 1) {
         const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
         return matchingFeachure.featureName;
-      } else {
-        console.log('Не найдено соответствующих featureId для characteristicId:', characteristicId);
+      }
+      else if (matchingFeatureIds.length > 1) 
+        {
+          const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
+          return matchingFeachure[0].featureName;
+        }
+      else {
         return '-';
       } 
   }
