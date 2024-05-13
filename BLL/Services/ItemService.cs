@@ -28,12 +28,17 @@ namespace BLL.Services
             if (itemRequest is null)
                 throw new ArgumentNullException(nameof(itemRequest), message: "Object is empty");
             var item = _mapper.Map<Item>(itemRequest);
+            //foreach (var featureItem in item.FeatureItem)
+            //{
+            //    featureItem.Item = item;
+            //}
             //foreach (var characteristicId in item.SelectedFeatures.Keys)
             //{
             //    var featureId = item.SelectedFeatures[characteristicId];
             //    _context.ItemFeatures.Add(new ItemFeature { ItemId = item.ItemId, FeatureId = featureId });
             //}
-            _unitOfWork.GetRepository<Item>().Create(item);
+            //_unitOfWork.GetRepository<Item>().Create(item);
+            _unitOfWork.ItemRepository.Create(item);
             _unitOfWork.Save();
         }
 
@@ -46,17 +51,48 @@ namespace BLL.Services
 
             if (items is null)
                 throw new NotFoundException("List is empty");
-            //var itemDetails = items.Select(item => new ItemRespond
-            //{
-            //    Name = item.Name,
-            //    CharacteristicValues = characteristics.Select(characteristic =>
-            //        featureItems
-            //            .Where(fi => fi.ItemId == item.Id && fi.Feature.CharacteristicsId == characteristic.Id)
-            //            .Select(fi => fi.Feature.Name)
-            //            .FirstOrDefault() ?? "N/A"
-            //).ToList()
-            //}).ToList();
+ 
             return _mapper.Map<IEnumerable<ItemRespond>>(items);
+        }
+        public IEnumerable<ItemRespond> GetGeneticSolve()
+        {
+            var items = _unitOfWork.GetRepository<Item>().GetAll();
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+            var features = _unitOfWork.GetRepository<Feature>().GetAll();
+
+            if (items is null)
+                throw new NotFoundException("List is empty");
+
+            int[,] matrix = new int[items.Count(), features.Count()];
+
+            // Заполнение матрицы
+            for (int i = 0; i < items.Count(); i++)
+            {
+                for (int j = 0; j < features.Count(); j++)
+                {
+                    // Проверяем, есть ли у текущего элемента данная характеристика
+                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j).Id) ? 1 : 0;
+                }
+            }
+            var geneticAlgo = new GeneticAlgo(matrix);
+            var validMatrix = geneticAlgo.VakidMatrix;
+            var population = geneticAlgo.Population;
+            var indexOfItems = geneticAlgo.GetSolutionByGeneticAlgWithPrint(validMatrix, population);
+         
+            List<Item> filteredItems = new List<Item>();
+
+            // Пройдите по индексам элементов
+            foreach (var index in indexOfItems)
+            {
+                // Проверьте, существует ли элемент с таким индексом в списке items
+                if (index < items.Count())
+                {
+                    // Если элемент существует, добавьте его в отфильтрованный список
+                    filteredItems.Add(items.ElementAt(index));
+                }
+            }
+            return _mapper.Map<IEnumerable<ItemRespond>>(filteredItems);
         }
         public ItemRequest Get(int id)
         {
@@ -80,8 +116,15 @@ namespace BLL.Services
 
             item = _mapper.Map(itemRequest, item);
 
+            // _unitOfWork.ItemRepository.Update(item);
             _unitOfWork.GetRepository<Item>().Update(item);
+
             _unitOfWork.Save();
+        }
+        public void GetGeneticAlgo ()
+        {
+            Console.WriteLine("Hello world");
+
         }
         public void Delete(int id)
         {

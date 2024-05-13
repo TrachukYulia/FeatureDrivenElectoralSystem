@@ -7,6 +7,7 @@ using DAL.Data;
 using DAL.Interfaces;
 using DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace DAL.Repository
 {
@@ -17,15 +18,35 @@ namespace DAL.Repository
         {
             _db = context;
         }
+        public new void Update(Item item)
+        {
+
+            // Получаем все существующие записи FeatureItem для текущего элемента Item
+            //var existingFeatures = _db.FeatureItem.Where(fi => fi.ItemId == item.Id).ToList();
+
+            //// Обновляем или удаляем существующие записи FeatureItem
+            //foreach (var existingFeature in existingFeatures)
+            //{
+            //    // Находим соответствующий элемент FeatureItem в списке item.FeatureItem
+            //    var newItemFeature = item.FeatureItem.FirstOrDefault(nf => nf.Id == existingFeature.Id);
+            //    if (newItemFeature != null)
+            //    {
+            //        // Обновляем значение featureId для существующего элемента FeatureItem
+            //        existingFeature.FeatureId = newItemFeature.FeatureId;
+
+            //        _db.FeatureItem.Update(existingFeature);
+            //    }
+             
+            //}
+
+            _db.Items.Update(item);
+
+
+        }
+
         public new void Create(Item item)
         {
-            //foreach (var characteristicId in item..Keys)
-            //{
-            //    var featureId = item.SelectedFeatures[characteristicId];
-            //    _context.ItemFeatures.Add(new ItemFeature { ItemId = item.ItemId, FeatureId = featureId });
-            //}
             _db.Items.Add(item);
-
             // Добавляем связи Item-Feature в контекст данных
             foreach (var itemFeature in item.FeatureItem)
             {
@@ -33,7 +54,6 @@ namespace DAL.Repository
 
                 _db.FeatureItem.Add(itemFeature);
             }
-            //_db.SaveChanges();
         }
     }
 }

@@ -14,6 +14,17 @@ namespace DAL.Repository
     {
         private Hashtable _repositories;
         private readonly DataContext _context;
+        private ItemRepository _itemRepository;
+
+        public ItemRepository ItemRepository
+        {
+            get
+            {
+                if (_itemRepository == null)
+                    _itemRepository = new ItemRepository(_context);
+                return _itemRepository;
+            }
+        }
 
         public UnitOfWork(DataContext context)
         {
@@ -38,6 +49,7 @@ namespace DAL.Repository
         {
             _context.SaveChanges();
         }
+
         public void Dispose()
         {
             _context.Dispose();

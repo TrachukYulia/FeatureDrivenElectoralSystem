@@ -170,7 +170,6 @@ export class AddEditItemComponent implements OnInit {
             // Если характеристика еще не существует в массиве selectedFeatures, добавим новую запись
             this.selectedFeatures.push({ characteristicId, featureId });
           }
-
         }
       });
     });

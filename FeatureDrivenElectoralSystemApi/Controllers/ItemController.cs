@@ -21,7 +21,13 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
             IEnumerable<ItemRespond> itemRequest = _itemService.GetAll();
             return Ok(itemRequest);
         }
-
+        [HttpGet]
+        [Route("/genetic")]
+        public ActionResult<IEnumerable<ItemRespond>> GetGeneticSolve()
+        {
+            IEnumerable<ItemRespond> itemRequest = _itemService.GetGeneticSolve();
+            return Ok(itemRequest);
+        }
         [HttpPost]
         public ActionResult CreateFesture(ItemRequest itemRequest)
         {

@@ -10,6 +10,7 @@ namespace BLL.Interfaces
     public interface IItemService
     {
         IEnumerable<ItemRespond> GetAll();
+        IEnumerable<ItemRespond> GetGeneticSolve();
         void Create(ItemRequest item);
         ItemRequest Get(int id);
         void Update(ItemRequest itemRequest, int id);

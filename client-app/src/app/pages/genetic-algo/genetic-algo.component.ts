@@ -12,29 +12,29 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 import { FeaturesService } from '../sevrices/features.service';
 import { CharacteristicsService } from '../sevrices/characteristics.service';
-import { AddEditItemComponent } from './components/add-edit-item/add-edit-item.component';
 import { ItemService } from '../sevrices/item.service';
 import { Characteristic } from '../models/characteristic.model';
 import { Item } from '../models/item.model';
 import { CharacteristicFeatureMapping } from '../models/ch-feature-map.model';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
 @Component({
-  selector: 'app-items',
+  selector: 'app-genetic-algo',
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
     MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule,],
-  templateUrl: './items.component.html',
-  styleUrl: './items.component.css'
+  templateUrl: './genetic-algo.component.html',
+  styleUrl: './genetic-algo.component.css'
 })
-export class ItemsComponent implements OnInit{
+export class GeneticAlgoComponent implements OnInit {
   itemName!: string;
   selectedFeatures: { [key: number]: number } = {};
   characteristics: Characteristic[] = [];
   features: any = {};
   items: any = [];
-  displayedColumns: string[] = ['id', 'name', 'action'];;
+  displayedColumns: string[] = ['id', 'name'];;
   dataSource!: MatTableDataSource<any>;
   characteristicsMap: Map<number, string[]> = new Map<number, string[]>();
   characteristicFeatureMapping: CharacteristicFeatureMapping[] = [];
@@ -145,7 +145,7 @@ export class ItemsComponent implements OnInit{
   }
   
   getItemsList(){
-    this._itemService.getItems().subscribe({
+    this._itemService.getGeneticSolution().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
