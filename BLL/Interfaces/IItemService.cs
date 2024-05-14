@@ -11,6 +11,8 @@ namespace BLL.Interfaces
     {
         IEnumerable<ItemRespond> GetAll();
         IEnumerable<ItemRespond> GetGeneticSolve();
+        IEnumerable<ItemRespond> GetGreedySolve();
+
         void Create(ItemRequest item);
         ItemRequest Get(int id);
         void Update(ItemRequest itemRequest, int id);

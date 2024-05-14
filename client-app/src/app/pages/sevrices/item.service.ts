@@ -21,6 +21,9 @@ export class ItemService {
  getGeneticSolution(): Observable<any> {
   return this.http.get('https://localhost:7059/genetic');
 }
+getGreedySolution(): Observable<any> {
+  return this.http.get('https://localhost:7059/greedy');
+}
  updateItem( id: number, ItemData: any): Observable<any> {
    return this.http.put('https://localhost:7059/api/Item/'+id, ItemData);
  }

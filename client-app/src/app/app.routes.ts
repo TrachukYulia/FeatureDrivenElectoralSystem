@@ -25,6 +25,10 @@ export const routes: Routes = [
     {
         path:'electrocalsystem',
         component: DrivenElectrocalSystemComponent
-    }
+    },
+    {
+        path:'',
+        component: DrivenElectrocalSystemComponent
+    },
    
 ];

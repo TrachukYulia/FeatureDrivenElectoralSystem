@@ -20,15 +20,15 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
 @Component({
-  selector: 'app-genetic-algo',
+  selector: 'app-greedy-alg',
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
     MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule,],
-  templateUrl: './genetic-algo.component.html',
-  styleUrl: './genetic-algo.component.css'
+  templateUrl: './greedy-alg.component.html',
+  styleUrl: './greedy-alg.component.css'
 })
-export class GeneticAlgoComponent implements OnInit {
+export class GreedyAlgComponent implements OnInit {
   itemName!: string;
   selectedFeatures: { [key: number]: number } = {};
   characteristics: Characteristic[] = [];
@@ -135,7 +135,7 @@ export class GeneticAlgoComponent implements OnInit {
   }
   
   getItemsList(){
-    this._itemService.getGeneticSolution().subscribe({
+    this._itemService.getGreedySolution().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;

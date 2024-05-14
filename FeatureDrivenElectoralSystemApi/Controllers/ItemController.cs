@@ -28,6 +28,13 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
             IEnumerable<ItemRespond> itemRequest = _itemService.GetGeneticSolve();
             return Ok(itemRequest);
         }
+        [HttpGet]
+        [Route("/greedy")]
+        public ActionResult<IEnumerable<ItemRespond>> GetGreedySolve()
+        {
+            IEnumerable<ItemRespond> itemRequest = _itemService.GetGreedySolve();
+            return Ok(itemRequest);
+        }
         [HttpPost]
         public ActionResult CreateFesture(ItemRequest itemRequest)
         {

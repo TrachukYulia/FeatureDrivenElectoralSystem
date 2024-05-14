@@ -1,0 +1,41 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+  
+  .main-body {
+    text-align: center;
+    padding-top: 20px;
+    margin: auto; /* Центрирование по горизонтали */
+    max-width: 80%;
+    /* .mat-form-field {
+      width: 15%;
+    } */
+  }
+  .my-table{
+    width: 80%; /* Ширина контейнера */
+    height: 60%; /* Высота контейнера */
+    margin: auto; /* Центрирование по горизонтали */
+    overflow: auto; /* Добавление полос прокрутки при необходимости */  }
+  
+  .action {
+    display: flex;
+    position: inherit;
+    gap: 5px;
+  }
+  .btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #5c0393;
+    --bs-btn-border-color: #435d82;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #554382;
+    --bs-btn-hover-border-color: #554382;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #554382;
+    --bs-btn-active-border-color: #554382;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #554382;
+    --bs-btn-disabled-border-color: #554382;
+  }
+  

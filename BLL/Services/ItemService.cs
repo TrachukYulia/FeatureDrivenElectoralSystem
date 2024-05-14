@@ -94,6 +94,46 @@ namespace BLL.Services
             }
             return _mapper.Map<IEnumerable<ItemRespond>>(filteredItems);
         }
+        public IEnumerable<ItemRespond> GetGreedySolve()
+        {
+            var items = _unitOfWork.GetRepository<Item>().GetAll();
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+            var features = _unitOfWork.GetRepository<Feature>().GetAll();
+
+            if (items is null)
+                throw new NotFoundException("List is empty");
+
+            int[,] matrix = new int[items.Count(), features.Count()];
+
+            // Заполнение матрицы
+            for (int i = 0; i < items.Count(); i++)
+            {
+                for (int j = 0; j < features.Count(); j++)
+                {
+                    // Проверяем, есть ли у текущего элемента данная характеристика
+                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j).Id) ? 1 : 0;
+                }
+            }
+            var greedyAlg = new GreedyAlg(matrix);
+            var indexOfItems = greedyAlg.Solve();
+
+            List<Item> filteredItems = new List<Item>();
+
+            // Пройдите по индексам элементов
+            foreach (var index in indexOfItems)
+            {
+                // Проверьте, существует ли элемент с таким индексом в списке items
+                if (index < items.Count())
+                {
+                    // Если элемент существует, добавьте его в отфильтрованный список
+                    filteredItems.Add(items.ElementAt(index));
+                }
+            }
+            return _mapper.Map<IEnumerable<ItemRespond>>(filteredItems);
+        }
+
+
         public ItemRequest Get(int id)
         {
             var item = _unitOfWork.GetRepository<Item>().Get(id);
