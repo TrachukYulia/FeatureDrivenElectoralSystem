@@ -11,8 +11,7 @@ namespace BLL.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<ItemFeatureRequest> FeatureItem { get; set; }
-
+        public ICollection<Feature>? Features { get; set; }
         //   public ICollection<FeatureItem> FeatureItem { get; set; }
         //public ICollection<string> FeaturesName { get; set; }
         //  public string Name { get; set; }

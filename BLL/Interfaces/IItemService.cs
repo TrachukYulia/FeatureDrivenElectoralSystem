@@ -1,4 +1,5 @@
 ﻿using BLL.DTO;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BLL.Interfaces
     {
         IEnumerable<ItemRespond> GetAll();
         IEnumerable<ItemRespond> GetGeneticSolve();
-        IEnumerable<ItemRespond> GetGreedySolve();
+        IEnumerable<ItemRespond> GetGreedySolve(List<int> features);
 
         void Create(ItemRequest item);
         ItemRequest Get(int id);

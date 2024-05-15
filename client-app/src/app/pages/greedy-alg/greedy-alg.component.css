@@ -5,11 +5,10 @@
   .main-body {
     text-align: center;
     padding-top: 20px;
-    margin: auto; /* Центрирование по горизонтали */
-    max-width: 80%;
-    /* .mat-form-field {
-      width: 15%;
-    } */
+    max-width: 100%;
+    margin: 30px auto; 
+    /* margin-left: 20px; */
+
   }
   .my-table{
     width: 80%; /* Ширина контейнера */

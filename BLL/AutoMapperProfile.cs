@@ -32,7 +32,7 @@ namespace BLL
             CreateMap<ItemRespond, Item>()
                     .ReverseMap();
             CreateMap<ItemRequest, Item>()
-                .ForMember(dest => dest.FeatureItem, opt => opt.MapFrom(src => src.FeatureItem))
+                //.ForMember(dest => dest.FeatureItem, opt => opt.MapFrom(src => src.FeatureItem))
                 .ReverseMap();
             CreateMap<ItemRespond, Item>()
              //   .ForMember(dest => dest.FeatureItem, opt => opt.MapFrom(src => src.FeatureItem))

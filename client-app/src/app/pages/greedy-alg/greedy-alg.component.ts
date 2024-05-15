@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -19,6 +19,8 @@ import { CharacteristicFeatureMapping } from '../models/ch-feature-map.model';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
+import { Subscription } from 'rxjs';
+import { FeatureQueryService } from '../sevrices/feature-query.service';
 @Component({
   selector: 'app-greedy-alg',
   standalone: true,
@@ -40,11 +42,16 @@ export class GreedyAlgComponent implements OnInit {
   characteristicFeatureMapping: CharacteristicFeatureMapping[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  //@Input() queryString!: string;
+  private subscription!: Subscription;
+  featureQuery: any[] = [];
+
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
     private _charService: CharacteristicsService,
     private _coreService: CoreService,
-    private _itemService: ItemService
+    private _itemService: ItemService,
+    private _featureQueryService: FeatureQueryService
   ){}
   getHeaderRowDef(): string[] {
     console.log('Characteristic:', this.characteristics.map(ch=>ch.name))
@@ -68,7 +75,10 @@ export class GreedyAlgComponent implements OnInit {
   ngOnInit(): void {
     this.loadCharacteristics();
     this.loadFeatures();
-    this.getItemsList();
+   // this.getItemsList();
+   this.featureQuery = [73, 76]
+   const queryString = this.featureQuery.map(id => `id=${id}`).join('&');
+   this.getItemsList(queryString);
   }
   loadCharacteristics() {
     this._charService.getCharacteristics().subscribe({
@@ -86,10 +96,6 @@ export class GreedyAlgComponent implements OnInit {
       const featureItem = item.featureItem.map((x: { featureId: any; })=>x.featureId);
       const matchingFeatureIds = featureItem.filter((featureId: any) => {
         const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
-        this.features.forEach((f: { characteristicsId: number; id: any; })=>{
-          if(f.characteristicsId === characteristicId && f.id === featureId)
-            console.log('characteristicsId', characteristicId);
-        })
         return a; 
       });
       if (matchingFeatureIds.length = 1) {
@@ -110,6 +116,12 @@ export class GreedyAlgComponent implements OnInit {
       next: (res) => {
         this.features = res;
         console.log('Features is load:', this.features)
+        this.subscription = this._featureQueryService.selectedFeaturesChanged.subscribe(features => {
+          //this.featureQuery = features;
+          this.featureQuery = [73, 76]
+          const queryString = this.featureQuery.map(id => `id=${id}`).join('&');
+          this.getItemsList(queryString);
+    });
       },
       error: console.log,
     })
@@ -134,8 +146,8 @@ export class GreedyAlgComponent implements OnInit {
     })
   }
   
-  getItemsList(){
-    this._itemService.getGreedySolution().subscribe({
+  getItemsList(queryString: string){
+    this._itemService.getGreedySolution(queryString).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
@@ -146,23 +158,6 @@ export class GreedyAlgComponent implements OnInit {
       error: console.log,
     })
   }
-
-   buildCharacteristicsMap(items: Item[]): void {
-    items.forEach(item => {
-      item.featureItem?.forEach(featureItem => {
-        const characteristicId = this.getCharacteristicId(featureItem.featureId);
-        if (characteristicId) {
-          const characteristicValues = this.characteristicsMap.get(characteristicId);
-          if (characteristicValues) {
-            characteristicValues.push(this.getFeatureName(featureItem.featureId));
-          } else {
-            this.characteristicsMap.set(characteristicId, [this.getFeatureName(featureItem.featureId)]);
-          }
-        }
-      });
-    });
-  }
-  
   getFeatureValueForCharacteristic(item: Item, characteristicId: number): string[] {
     return this.characteristicsMap.get(characteristicId) || [];
   }

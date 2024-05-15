@@ -94,16 +94,17 @@ namespace BLL.Services
             }
             return _mapper.Map<IEnumerable<ItemRespond>>(filteredItems);
         }
-        public IEnumerable<ItemRespond> GetGreedySolve()
+        public IEnumerable<ItemRespond> GetGreedySolve(List<int> features)
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();
             var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
             var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
-            var features = _unitOfWork.GetRepository<Feature>().GetAll();
+           var features2 = _unitOfWork.GetRepository<Feature>().GetAll();
 
             if (items is null)
-                throw new NotFoundException("List is empty");
-
+                throw new NotFoundException("List of items is empty");
+            if (features is null)
+                throw new NotFoundException("You did not select any feature");
             int[,] matrix = new int[items.Count(), features.Count()];
 
             // Заполнение матрицы
@@ -112,7 +113,7 @@ namespace BLL.Services
                 for (int j = 0; j < features.Count(); j++)
                 {
                     // Проверяем, есть ли у текущего элемента данная характеристика
-                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j).Id) ? 1 : 0;
+                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features2.ElementAt(j).Id) ? 1 : 0;
                 }
             }
             var greedyAlg = new GreedyAlg(matrix);
@@ -136,7 +137,8 @@ namespace BLL.Services
 
         public ItemRequest Get(int id)
         {
-            var item = _unitOfWork.GetRepository<Item>().Get(id);
+            // var item = _unitOfWork.GetRepository<Item>().Get(id);
+            var item = _unitOfWork.ItemRepository.Get(id);
 
             if (item == null)
             {

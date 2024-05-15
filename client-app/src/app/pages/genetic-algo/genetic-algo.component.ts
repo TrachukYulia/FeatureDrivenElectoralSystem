@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 import { FeaturesService } from '../sevrices/features.service';
 import { CharacteristicsService } from '../sevrices/characteristics.service';
@@ -45,24 +45,12 @@ export class GeneticAlgoComponent implements OnInit {
     private _charService: CharacteristicsService,
     private _coreService: CoreService,
     private _itemService: ItemService
-  ){}
+  ) { }
   getHeaderRowDef(): string[] {
-    console.log('Characteristic:', this.characteristics.map(ch=>ch.name))
-    this.displayedColumns = this.displayedColumns.concat(this.characteristics.map(ch=>ch.name))
+    console.log('Characteristic:', this.characteristics.map(ch => ch.name))
+    this.displayedColumns = this.displayedColumns.concat(this.characteristics.map(ch => ch.name))
     console.log('displayedColumns:', this.displayedColumns)
 
-    return this.displayedColumns;
-  }
-  getColumnDef(): string[] {
-    const tempArr : string[] = ['id', 'name', 'action'];
-    tempArr.forEach(i=> {
-      this.displayedColumns.push(i)
-    })
-    console.log('Characteristic:', this.characteristics)
-    this.characteristics.forEach(ch=> {
-      this.displayedColumns.push(ch.name)
-    })
-    console.log('displayedColumns:', this.displayedColumns)
     return this.displayedColumns;
   }
   ngOnInit(): void {
@@ -74,36 +62,35 @@ export class GeneticAlgoComponent implements OnInit {
     this._charService.getCharacteristics().subscribe({
       next: (res) => {
         this.characteristics = res;
-       console.log('Characteristics is load:', this.characteristics)
-       this.characteristics.forEach(characteristic => {
-        this.displayedColumns.push(characteristic.name);
-      });
+        console.log('Characteristics is load:', this.characteristics)
+        this.characteristics.forEach(characteristic => {
+          this.displayedColumns.push(characteristic.name);
+        });
       },
       error: console.log,
     })
   }
   getItemValue(item: any, characteristicId: number): string {
-      const featureItem = item.featureItem.map((x: { featureId: any; })=>x.featureId);
-      const matchingFeatureIds = featureItem.filter((featureId: any) => {
-        const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
-        this.features.forEach((f: { characteristicsId: number; id: any; })=>{
-          if(f.characteristicsId === characteristicId && f.id === featureId)
-            console.log('characteristicsId', characteristicId);
-        })
-        return a; 
-      });
-      if (matchingFeatureIds.length = 1) {
-        const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
-        return matchingFeachure.featureName;
-      }
-      else if (matchingFeatureIds.length > 1) 
-        {
-          const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
-          return matchingFeachure[0].featureName;
-        }
-      else {
-        return '-';
-      } 
+    const featureItem = item.featureItem.map((x: { featureId: any; }) => x.featureId);
+    const matchingFeatureIds = featureItem.filter((featureId: any) => {
+      const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
+      // this.features.forEach((f: { characteristicsId: number; id: any; }) => {
+      //   if (f.characteristicsId === characteristicId && f.id === featureId)
+
+      // })
+      return a;
+    });
+    if (matchingFeatureIds.length = 1) {
+      const matchingFeachure = this.features.find((f: { id: any; }) => f.id == matchingFeatureIds);
+      return matchingFeachure.featureName;
+    }
+    else if (matchingFeatureIds.length > 1) {
+      const matchingFeachure = this.features.find((f: { id: any; }) => f.id == matchingFeatureIds);
+      return matchingFeachure[0].featureName;
+    }
+    else {
+      return '-';
+    }
   }
   loadFeatures() {
     this._featureService.getFeatures().subscribe({
@@ -114,7 +101,7 @@ export class GeneticAlgoComponent implements OnInit {
       error: console.log,
     })
   }
-   getCharacteristicsList() {
+  getCharacteristicsList() {
     this._charService.getCharacteristics().subscribe({
       next: (res) => {
         this.characteristics = res;
@@ -133,8 +120,8 @@ export class GeneticAlgoComponent implements OnInit {
       error: console.log,
     })
   }
-  
-  getItemsList(){
+
+  getItemsList() {
     this._itemService.getGeneticSolution().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
@@ -147,22 +134,7 @@ export class GeneticAlgoComponent implements OnInit {
     })
   }
 
-   buildCharacteristicsMap(items: Item[]): void {
-    items.forEach(item => {
-      item.featureItem?.forEach(featureItem => {
-        const characteristicId = this.getCharacteristicId(featureItem.featureId);
-        if (characteristicId) {
-          const characteristicValues = this.characteristicsMap.get(characteristicId);
-          if (characteristicValues) {
-            characteristicValues.push(this.getFeatureName(featureItem.featureId));
-          } else {
-            this.characteristicsMap.set(characteristicId, [this.getFeatureName(featureItem.featureId)]);
-          }
-        }
-      });
-    });
-  }
-  
+
   getFeatureValueForCharacteristic(item: Item, characteristicId: number): string[] {
     return this.characteristicsMap.get(characteristicId) || [];
   }
@@ -175,10 +147,5 @@ export class GeneticAlgoComponent implements OnInit {
   getCharacteristicName(characteristicId: number): string {
     const characteristic = this.characteristics.find(x => x.id == characteristicId);
     return characteristic ? characteristic.name : '';
-  }
-
-  getFeatureName(featureId: number): string {
-    const feature = this.features.find((x: { id: number; }) => x.id == featureId);
-    return feature ? feature.name : '';
   }
 }
