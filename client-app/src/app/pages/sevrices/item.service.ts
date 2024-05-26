@@ -30,4 +30,11 @@ getGreedySolution(data: any): Observable<any> {
  deleteItem(id: number): Observable<any> {
    return this.http.delete('https://localhost:7059/api/Item/'+id);
  }
+ exportItemsGreedy(): Observable<Blob> {
+  return this.http.get(`https://localhost:7059/greedy/export`, { responseType: 'blob' });
+}
+
+exportItemsGenetic(): Observable<Blob> {
+  return this.http.get(`https://localhost:7059/genetic/export`, { responseType: 'blob' });
+}
 }

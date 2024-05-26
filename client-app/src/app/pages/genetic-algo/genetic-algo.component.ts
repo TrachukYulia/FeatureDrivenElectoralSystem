@@ -44,6 +44,8 @@ export class GeneticAlgoComponent implements OnInit {
   featureQuery: any[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  message: any;
+
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
     private _charService: CharacteristicsService,
@@ -108,7 +110,10 @@ export class GeneticAlgoComponent implements OnInit {
             const queryString = this.featureQuery.map(id => `id=${id}`).join('&');
             this.getItemsList(queryString);
           }
-        
+          else{
+            this.items = []; // Очищаем таблицу
+            this.message = "No items found for the given parameters"; // Устанавливаем сообщение
+          }
         });
       },
       error: console.log,
@@ -141,10 +146,14 @@ export class GeneticAlgoComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.items = res;
-        
+        this.message = "";
         console.log('Item is loaded', res);
       },
-      error: console.log,
+      error: (err) => {
+        console.log(err);
+        this.items = [];
+        this.message = "Ошибка при загрузке данных";
+      }
     })
   }
 

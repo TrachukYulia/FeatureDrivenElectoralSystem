@@ -7,9 +7,14 @@ using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
+using System.Globalization;
+using System.IO;
 
 namespace BLL.Services
 {
@@ -54,6 +59,20 @@ namespace BLL.Services
  
             return _mapper.Map<IEnumerable<ItemRespond>>(items);
         }
+        //public File ExportToCsv(IEnumerable<ItemRespond> items, string fileName)
+        //{
+        //    using (var memoryStream = new MemoryStream())
+        //    using (var writer = new StreamWriter(memoryStream))
+        //    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        //    {
+        //        csv.WriteRecords(items);
+
+        //        writer.Flush();
+        //        memoryStream.Position = 0;
+
+        //        return Microsoft.AspNetCore.Mvc.ControllerBase.File(memoryStream, "application/octet-stream", fileName);
+        //    }
+        //}
         public IEnumerable<ItemRespond> GetGeneticSolve(List<int> features)
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();

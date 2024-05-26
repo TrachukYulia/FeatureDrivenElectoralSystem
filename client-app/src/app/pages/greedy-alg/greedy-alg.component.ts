@@ -21,6 +21,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
 import { Subscription } from 'rxjs';
 import { FeatureQueryService } from '../sevrices/feature-query.service';
+import { saveAs } from 'file-saver'
+
 @Component({
   selector: 'app-greedy-alg',
   standalone: true,
@@ -48,6 +50,7 @@ export class GreedyAlgComponent implements OnInit {
   private subscription!: Subscription;
   featureQuery: any[] = [];
   message: any;
+  selectedAlgorithm = 'greedy';
 
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
@@ -115,7 +118,6 @@ export class GreedyAlgComponent implements OnInit {
         this.features = res;
         console.log('Features is load:', this.features)
         this.subscription = this._featureQueryService.selectedFeaturesChanged.subscribe(features => {
-          console.log('selectedFeaturesChanged', features)
           if (features.length!=0) {
             this.featureQuery = features;
             console.log('selectedFeaturesChanged (greedy)', features)
@@ -126,8 +128,6 @@ export class GreedyAlgComponent implements OnInit {
             this.items = []; // Очищаем таблицу
             this.message = "No items found for the given parameters"; // Устанавливаем сообщение
           }
-          
-
         });
       },
       error: console.log,
@@ -187,5 +187,12 @@ export class GreedyAlgComponent implements OnInit {
   getFeatureName(featureId: number): string {
     const feature = this.features.find((x: { id: number; }) => x.id == featureId);
     return feature ? feature.name : '';
+  }
+  exportItems(): void {
+    if (this.selectedAlgorithm === 'greedy') {
+      this._itemService.exportItemsGreedy().subscribe(blob => {
+        saveAs(blob, 'greedy_items.csv');
+      });
+    } 
   }
 }

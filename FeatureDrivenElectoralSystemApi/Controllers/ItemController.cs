@@ -1,7 +1,9 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
+using CsvHelper;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace FeatureDrivenElectoralSystemApi.Controllers
 {
@@ -10,6 +12,8 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
     public class ItemController : ControllerBase
     {
         private IItemService _itemService;
+        private static  IEnumerable<ItemRespond> _geneticSolve;
+        private static IEnumerable<ItemRespond> _greedySolve;
         public ItemController(IItemService itemService)
         {
             _itemService = itemService;
@@ -25,15 +29,46 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         [Route("/genetic")]
         public ActionResult<IEnumerable<ItemRespond>> GetGeneticSolve([FromQuery] List<int> id)
         {
-            IEnumerable<ItemRespond> itemRequest = _itemService.GetGeneticSolve(id);
-            return Ok(itemRequest);
+            _geneticSolve = _itemService.GetGeneticSolve(id);
+            return Ok(_geneticSolve);
         }
         [HttpGet]
         [Route("/greedy")]
         public ActionResult<IEnumerable<ItemRespond>> GetGreedySolve([FromQuery] List<int> id)
         {
-            IEnumerable<ItemRespond> itemRequest = _itemService.GetGreedySolve(id);
-            return Ok(itemRequest);
+            _greedySolve = _itemService.GetGreedySolve(id);
+            return Ok(_greedySolve);
+        }
+        //[HttpGet]
+        //[Route("/genetic/export")]
+        //public IActionResult ExportGeneticSolve()
+        //{
+        //    return _itemService.ExportToCsv(_geneticSolve, "genetic_items.csv");
+        //}
+        [HttpGet]
+        [Route("/export222")]
+        public IActionResult ExportToCsv(IEnumerable<ItemRespond> items, string fileName)
+        {
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords(items);
+                writer.Flush();
+                var byteArray = memoryStream.ToArray();
+                return File(byteArray, "application/octet-stream", fileName);
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("/greedy/export")]
+        public IActionResult ExportGreedySolve()
+        {
+            if (_greedySolve != null)
+                return ExportToCsv(_greedySolve, "greedy_items.csv");
+            else 
+                return Ok();
         }
         [HttpPost]
         public ActionResult CreateFesture(ItemRequest itemRequest)

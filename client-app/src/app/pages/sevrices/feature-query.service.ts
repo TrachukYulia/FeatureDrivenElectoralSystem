@@ -5,7 +5,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class FeatureQueryService {
-  //private selectedFeaturesSubject = new Subject<number[]>();
   private selectedFeatures: number[] = [];
   selectedFeaturesChanged = new BehaviorSubject<number[]>([]);
 
