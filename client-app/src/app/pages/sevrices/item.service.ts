@@ -18,8 +18,8 @@ export class ItemService {
   getItems(): Observable<any> {
    return this.http.get('https://localhost:7059/api/Item');
  }
- getGeneticSolution(): Observable<any> {
-  return this.http.get('https://localhost:7059/genetic');
+ getGeneticSolution(data: any): Observable<any> {
+  return this.http.get('https://localhost:7059/genetic?'+data);
 }
 getGreedySolution(data: any): Observable<any> {
   return this.http.get('https://localhost:7059/greedy?'+data);

@@ -47,22 +47,26 @@ namespace BLL.Services
             var items = _unitOfWork.GetRepository<Item>().GetAll();
             var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
             var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
-
+            var features = _unitOfWork.GetRepository<Feature>().GetAll();
 
             if (items is null)
                 throw new NotFoundException("List is empty");
  
             return _mapper.Map<IEnumerable<ItemRespond>>(items);
         }
-        public IEnumerable<ItemRespond> GetGeneticSolve()
+        public IEnumerable<ItemRespond> GetGeneticSolve(List<int> features)
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();
             var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
             var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
-            var features = _unitOfWork.GetRepository<Feature>().GetAll();
+            var features2 = _unitOfWork.GetRepository<Feature>().GetAll();
 
             if (items is null)
                 throw new NotFoundException("List is empty");
+
+            if (features is null)
+                throw new NotFoundException("List is empty");
+
 
             int[,] matrix = new int[items.Count(), features.Count()];
 
@@ -72,7 +76,8 @@ namespace BLL.Services
                 for (int j = 0; j < features.Count(); j++)
                 {
                     // Проверяем, есть ли у текущего элемента данная характеристика
-                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j).Id) ? 1 : 0;
+                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j)) ? 1 : 0;
+                    //matrix[i, j] = featureItems.Any(fi => fi.ItemId == items.ElementAt(i).Id && fi.FeatureId == features.ElementAt(j).Id) ? 1 : 0;
                 }
             }
             var geneticAlgo = new GeneticAlgo(matrix);
@@ -99,7 +104,7 @@ namespace BLL.Services
             var items = _unitOfWork.GetRepository<Item>().GetAll();
             var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
             var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
-           var features2 = _unitOfWork.GetRepository<Feature>().GetAll();
+            var features2 = _unitOfWork.GetRepository<Feature>().GetAll();
 
             if (items is null)
                 throw new NotFoundException("List of items is empty");
@@ -113,7 +118,9 @@ namespace BLL.Services
                 for (int j = 0; j < features.Count(); j++)
                 {
                     // Проверяем, есть ли у текущего элемента данная характеристика
-                    matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features2.ElementAt(j).Id) ? 1 : 0;
+                       matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j)) ? 1 : 0;
+                  //  matrix[i, j] = featureItems.Any(fi => fi.ItemId == items.ElementAt(i).Id && fi.FeatureId == features.ElementAt(j)) ? 1 : 0;
+
                 }
             }
             var greedyAlg = new GreedyAlg(matrix);
@@ -138,7 +145,7 @@ namespace BLL.Services
         public ItemRequest Get(int id)
         {
             // var item = _unitOfWork.GetRepository<Item>().Get(id);
-            var item = _unitOfWork.ItemRepository.Get(id);
+            var item = _unitOfWork.GetRepository<Item>().Get(id);
 
             if (item == null)
             {
@@ -150,6 +157,9 @@ namespace BLL.Services
         public void Update(ItemRequest itemRequest, int id)
         {
             var item = _unitOfWork.GetRepository<Item>().Get(id);
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+            var featureItems = _unitOfWork.GetRepository<FeatureItem>().GetAll();
+            var features = _unitOfWork.GetRepository<Feature>().GetAll();
 
             if (item == null)
             {

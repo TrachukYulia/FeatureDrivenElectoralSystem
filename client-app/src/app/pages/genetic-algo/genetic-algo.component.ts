@@ -19,6 +19,8 @@ import { CharacteristicFeatureMapping } from '../models/ch-feature-map.model';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
+import { Subscription } from 'rxjs';
+import { FeatureQueryService } from '../sevrices/feature-query.service';
 @Component({
   selector: 'app-genetic-algo',
   standalone: true,
@@ -38,13 +40,16 @@ export class GeneticAlgoComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   characteristicsMap: Map<number, string[]> = new Map<number, string[]>();
   characteristicFeatureMapping: CharacteristicFeatureMapping[] = [];
+  private subscription!: Subscription;
+  featureQuery: any[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
     private _charService: CharacteristicsService,
     private _coreService: CoreService,
-    private _itemService: ItemService
+    private _itemService: ItemService,
+    private _featureQueryService: FeatureQueryService
   ) { }
   getHeaderRowDef(): string[] {
     console.log('Characteristic:', this.characteristics.map(ch => ch.name))
@@ -56,7 +61,6 @@ export class GeneticAlgoComponent implements OnInit {
   ngOnInit(): void {
     this.loadCharacteristics();
     this.loadFeatures();
-    this.getItemsList();
   }
   loadCharacteristics() {
     this._charService.getCharacteristics().subscribe({
@@ -97,6 +101,15 @@ export class GeneticAlgoComponent implements OnInit {
       next: (res) => {
         this.features = res;
         console.log('Features is load:', this.features)
+        this.subscription = this._featureQueryService.selectedFeaturesChanged.subscribe(features => {
+          if (features.length!=0) {
+            this.featureQuery = features;
+            console.log('selectedFeaturesChanged (genetic)', features)
+            const queryString = this.featureQuery.map(id => `id=${id}`).join('&');
+            this.getItemsList(queryString);
+          }
+        
+        });
       },
       error: console.log,
     })
@@ -121,13 +134,14 @@ export class GeneticAlgoComponent implements OnInit {
     })
   }
 
-  getItemsList() {
-    this._itemService.getGeneticSolution().subscribe({
+  getItemsList(data: any) {
+    this._itemService.getGeneticSolution(data).subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
         this.items = res;
+        
         console.log('Item is loaded', res);
       },
       error: console.log,

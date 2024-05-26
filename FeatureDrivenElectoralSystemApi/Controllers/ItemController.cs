@@ -23,16 +23,16 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
         [HttpGet]
         [Route("/genetic")]
-        public ActionResult<IEnumerable<ItemRespond>> GetGeneticSolve()
+        public ActionResult<IEnumerable<ItemRespond>> GetGeneticSolve([FromQuery] List<int> id)
         {
-            IEnumerable<ItemRespond> itemRequest = _itemService.GetGeneticSolve();
+            IEnumerable<ItemRespond> itemRequest = _itemService.GetGeneticSolve(id);
             return Ok(itemRequest);
         }
         [HttpGet]
         [Route("/greedy")]
-        public ActionResult<IEnumerable<ItemRespond>> GetGreedySolve()
+        public ActionResult<IEnumerable<ItemRespond>> GetGreedySolve([FromQuery] List<int> id)
         {
-            IEnumerable<ItemRespond> itemRequest = _itemService.GetGreedySolve();
+            IEnumerable<ItemRespond> itemRequest = _itemService.GetGreedySolve(id);
             return Ok(itemRequest);
         }
         [HttpPost]

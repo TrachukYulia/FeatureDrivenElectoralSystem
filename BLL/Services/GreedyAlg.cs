@@ -40,25 +40,25 @@ public class GreedyAlg
 
             if (columnsIndexToDelete.Count > 0)
             {
-                var newCountOfColumn = matrix.GetLength(1) - columnSums.Where(x => x == 0).Count();
+                int newCountOfColumn = matrix.GetLength(1) - columnsIndexToDelete.Count;
                 var newMatrix = new int[matrix.GetLength(0), newCountOfColumn];
-                foreach (var index in columnsIndexToDelete)
+
+                for (int i = 0; i < matrix.GetLength(0); i++)
                 {
-                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    int targetColumn = 0;
+                    for (int j = 0; j < matrix.GetLength(1); j++)
                     {
-                        int targetColumn = 0;
-                        for (int j = 0; j < matrix.GetLength(1); j++)
+                        if (!columnsIndexToDelete.Contains(j))
                         {
-                            if (j != index)
-                            {
-                                newMatrix[i, targetColumn] = matrix[i, j];
-                                targetColumn++;
-                            }
+                            newMatrix[i, targetColumn] = matrix[i, j];
+                            targetColumn++;
                         }
                     }
                 }
+
                 return newMatrix;
             }
+
 
             return matrix;
         }
