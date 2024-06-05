@@ -13,7 +13,7 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Client", "Client\Client.esp
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Client-app", "Client-app\Client-app.esproj", "{BE072A84-D0F8-4623-9377-AC001D428B8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{A562E806-BC5A-48F3-8D01-3C7C11A38A7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{A562E806-BC5A-48F3-8D01-3C7C11A38A7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

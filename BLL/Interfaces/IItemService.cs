@@ -13,7 +13,7 @@ namespace BLL.Interfaces
         IEnumerable<ItemRespond> GetAll();
         IEnumerable<ItemRespond> GetGeneticSolve(List<int> features);
         IEnumerable<ItemRespond> GetGreedySolve(List<int> features);
-
+        byte[] ExportItemsToCsv(IEnumerable<ItemRespond> items);
         void Create(ItemRequest item);
         ItemRequest Get(int id);
         void Update(ItemRequest itemRequest, int id);

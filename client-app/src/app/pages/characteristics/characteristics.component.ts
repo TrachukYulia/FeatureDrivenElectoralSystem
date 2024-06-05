@@ -9,7 +9,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 
@@ -18,7 +18,7 @@ import { CoreService } from '../../core/components/core.service';
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
      MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-     MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule
+     MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, MatSortModule
 
   ],
   templateUrl: './characteristics.component.html',
@@ -38,6 +38,7 @@ export class CharacteristicsComponent implements OnInit{
   ){}
   ngOnInit(): void {
     this.getCharacteristicsList();
+
   }
   openAddEditCharForm(){
    const dialogRef = this._dialog.open(AddEditCharacteristicsComponent);
@@ -58,10 +59,17 @@ export class CharacteristicsComponent implements OnInit{
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'name': return item.name.toLowerCase(); // Преобразуйте текст в нижний регистр перед сравнением
+            default: return item[property];
+          }
+        };
       },
       error: console.log,
     })
   }
+
   deleteCharacteristics(id: number)
   {
     this._charService.deleteCharacteristics(id).subscribe({
@@ -85,4 +93,5 @@ export class CharacteristicsComponent implements OnInit{
     }
    })
    }
+
 }

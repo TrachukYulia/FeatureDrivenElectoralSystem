@@ -17,13 +17,14 @@ import {MatCheckboxChange, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule, MatSelectionList} from '@angular/material/list';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FeatureQueryService } from '../sevrices/feature-query.service';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-driven-electrocal-system',
   standalone: true,
   imports: [GeneticAlgoComponent, GreedyAlgComponent, RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, CommonModule, MatCheckboxModule, MatListModule  ],
+    MatPaginator, MatPaginatorModule, MatFormFieldModule, CommonModule, MatCheckboxModule, MatListModule, MatSortModule  ],
   templateUrl: './driven-electrocal-system.component.html',
   styleUrl: './driven-electrocal-system.component.css'
 })

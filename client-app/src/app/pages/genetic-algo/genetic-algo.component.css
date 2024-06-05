@@ -37,4 +37,7 @@
     --bs-btn-disabled-bg: #554382;
     --bs-btn-disabled-border-color: #554382;
   }
-  
+  .export{
+    margin-top: 50px;
+    /* padding-top: 50px; */
+  }

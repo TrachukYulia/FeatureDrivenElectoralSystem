@@ -25,12 +25,12 @@
   <div class="container">
     <div class="row justify-content-md-center">
       <div class="col col-lg-2"> 
-        <form (ngSubmit)="onSubmit()">
-          <h3>Выберите фичи:</h3>
+        <form (ngSubmit)="onSubmit()" class = "selectFeatures">
+          <h3>Select main features:</h3>
           <!-- <button mat-raised-button (click)="selectAllFeatures()">Выбрать все</button> -->
-          <span> Выбрать все опции </span>
+          <span> Select all options </span>
           <mat-checkbox (change)="selectAllOptions($event)" class="primary"></mat-checkbox>
-        <button mat-raised-button color="primary" type="submit">Получить решение</button>
+        <button mat-raised-button color="primary" type="submit">Get Solution</button>
 
           <mat-selection-list #listOfSelectedFeachures>
             @for (f of features; track f) {

@@ -7,7 +7,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
@@ -19,7 +19,7 @@ import { CharacteristicsService } from '../sevrices/characteristics.service';
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule],
+    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, MatSortModule],
   templateUrl: './features.component.html',
   styleUrl: './features.component.css'
 })
@@ -54,7 +54,12 @@ export class FeaturesComponent implements OnInit {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
-        console.log(res);
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'name': return item.name.toLowerCase(); // Преобразуйте текст в нижний регистр перед сравнением
+            default: return item[property];
+          }
+        };
       },
       error: console.log,
     })

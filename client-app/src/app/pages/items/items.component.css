@@ -22,6 +22,11 @@
     position: inherit;
     gap: 5px;
   }
+  .button-space {
+    margin-right: 15px; /* Регулируйте значение по необходимости */
+}
+  .mat-mdc-unelevated-button.mat-warn {
+    --mdc-filled-button-container-color: #d24f45;}
   .btn-primary {
     --bs-btn-color: #fff;
     --bs-btn-bg: #5c0393;

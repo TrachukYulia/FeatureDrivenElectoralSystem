@@ -7,7 +7,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 import { FeaturesService } from '../sevrices/features.service';
@@ -28,7 +28,7 @@ import { saveAs } from 'file-saver'
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule,],
+    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule, MatSortModule ],
   templateUrl: './greedy-alg.component.html',
   styleUrl: './greedy-alg.component.css'
 })
@@ -50,7 +50,6 @@ export class GreedyAlgComponent implements OnInit {
   private subscription!: Subscription;
   featureQuery: any[] = [];
   message: any;
-  selectedAlgorithm = 'greedy';
 
   constructor(private _dialog: MatDialog,
     private _featureService: FeaturesService,
@@ -161,7 +160,12 @@ export class GreedyAlgComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.items = res;
         this.message = "";
-        console.log('Item is loaded', res);
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'name': return item.name.toLowerCase(); // Преобразуйте текст в нижний регистр перед сравнением
+            default: return item[property];
+          }
+        };
       },
       error: (err) => {
         console.log(err);
@@ -189,10 +193,8 @@ export class GreedyAlgComponent implements OnInit {
     return feature ? feature.name : '';
   }
   exportItems(): void {
-    if (this.selectedAlgorithm === 'greedy') {
       this._itemService.exportItemsGreedy().subscribe(blob => {
         saveAs(blob, 'greedy_items.csv');
       });
-    } 
   }
 }

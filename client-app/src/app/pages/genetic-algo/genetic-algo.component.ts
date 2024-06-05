@@ -7,7 +7,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CoreService } from '../../core/components/core.service';
 import { FeaturesService } from '../sevrices/features.service';
@@ -21,12 +21,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AddEditItemComponent } from '../items/components/add-edit-item/add-edit-item.component';
 import { Subscription } from 'rxjs';
 import { FeatureQueryService } from '../sevrices/feature-query.service';
+import { saveAs } from 'file-saver'
+
 @Component({
   selector: 'app-genetic-algo',
   standalone: true,
   imports: [RouterLink, FormsModule, MatDialogModule,
     MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule,],
+    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, CommonModule, MatSortModule],
   templateUrl: './genetic-algo.component.html',
   styleUrl: './genetic-algo.component.css'
 })
@@ -80,10 +82,7 @@ export class GeneticAlgoComponent implements OnInit {
     const featureItem = item.featureItem.map((x: { featureId: any; }) => x.featureId);
     const matchingFeatureIds = featureItem.filter((featureId: any) => {
       const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
-      // this.features.forEach((f: { characteristicsId: number; id: any; }) => {
-      //   if (f.characteristicsId === characteristicId && f.id === featureId)
-
-      // })
+   
       return a;
     });
     if (matchingFeatureIds.length = 1) {
@@ -144,10 +143,16 @@ export class GeneticAlgoComponent implements OnInit {
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'name': return item.name.toLowerCase(); // Преобразуйте текст в нижний регистр перед сравнением
+            default: return item[property];
+          }
+        };
         this.dataSource.paginator = this.paginator;
         this.items = res;
         this.message = "";
-        console.log('Item is loaded', res);
+       
       },
       error: (err) => {
         console.log(err);
@@ -171,4 +176,9 @@ export class GeneticAlgoComponent implements OnInit {
     const characteristic = this.characteristics.find(x => x.id == characteristicId);
     return characteristic ? characteristic.name : '';
   }
+  exportItems(): void {
+    this._itemService.exportItemsGenetic().subscribe(blob => {
+      saveAs(blob, 'genetic_items.csv');
+    });
+}
 }

@@ -1,6 +1,8 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
 using CsvHelper;
+using DAL.Models;
+using DAL.Repository;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -39,36 +41,33 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
             _greedySolve = _itemService.GetGreedySolve(id);
             return Ok(_greedySolve);
         }
-        //[HttpGet]
-        //[Route("/genetic/export")]
-        //public IActionResult ExportGeneticSolve()
-        //{
-        //    return _itemService.ExportToCsv(_geneticSolve, "genetic_items.csv");
-        //}
         [HttpGet]
-        [Route("/export222")]
-        public IActionResult ExportToCsv(IEnumerable<ItemRespond> items, string fileName)
+        [Route("/genetic/export")]
+        public IActionResult ExportGeneticSolve()
         {
-            using (var memoryStream = new MemoryStream())
-            using (var writer = new StreamWriter(memoryStream))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        
+            if (_geneticSolve == null || !_geneticSolve.Any())
             {
-                csv.WriteRecords(items);
-                writer.Flush();
-                var byteArray = memoryStream.ToArray();
-                return File(byteArray, "application/octet-stream", fileName);
+                return NotFound();
             }
-            
+
+            var csvFile = _itemService.ExportItemsToCsv(_geneticSolve);
+
+            return File(csvFile, "application/octet-stream", "genetic_items.csv");
         }
 
         [HttpGet]
         [Route("/greedy/export")]
         public IActionResult ExportGreedySolve()
         {
-            if (_greedySolve != null)
-                return ExportToCsv(_greedySolve, "greedy_items.csv");
-            else 
-                return Ok();
+            if (_greedySolve == null || !_greedySolve.Any())
+            {
+                return NotFound();
+            }
+
+            var csvFile = _itemService.ExportItemsToCsv(_greedySolve);
+
+            return File(csvFile, "application/octet-stream", "greedy_items.csv");
         }
         [HttpPost]
         public ActionResult CreateFesture(ItemRequest itemRequest)

@@ -63,3 +63,6 @@ html {
     margin-left: calc(-.5* var(--bs-gutter-x));
     align-items: center;
 }
+.selectFeatures{
+    margin-top: 15px;
+}

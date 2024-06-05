@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using CsvHelper;
 using System.Globalization;
 using System.IO;
+using DAL.Repository;
 
 namespace BLL.Services
 {
@@ -33,18 +34,47 @@ namespace BLL.Services
             if (itemRequest is null)
                 throw new ArgumentNullException(nameof(itemRequest), message: "Object is empty");
             var item = _mapper.Map<Item>(itemRequest);
-            //foreach (var featureItem in item.FeatureItem)
-            //{
-            //    featureItem.Item = item;
-            //}
-            //foreach (var characteristicId in item.SelectedFeatures.Keys)
-            //{
-            //    var featureId = item.SelectedFeatures[characteristicId];
-            //    _context.ItemFeatures.Add(new ItemFeature { ItemId = item.ItemId, FeatureId = featureId });
-            //}
-            //_unitOfWork.GetRepository<Item>().Create(item);
             _unitOfWork.ItemRepository.Create(item);
             _unitOfWork.Save();
+        }
+        public byte[] ExportItemsToCsv(IEnumerable<ItemRespond> items)
+        {
+            
+            var characteristics = _unitOfWork.GetRepository<Characteristic>().GetAll();
+
+
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new StreamWriter(memoryStream, new UTF8Encoding(true)))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteField("Id");
+                csv.WriteField("Name");
+
+                foreach (var characteristic in characteristics)
+                {
+                    csv.WriteField(characteristic.Name);
+                }
+                csv.NextRecord();
+
+                foreach (var item in items)
+                {
+                    csv.WriteField(item.Id);
+                    csv.WriteField(item.Name);
+
+                    foreach (var characteristic in characteristics)
+                    {
+                        var featureItem = item.FeatureItem
+                            .FirstOrDefault(f => _unitOfWork.GetRepository<Feature>().Get(f.FeatureId).CharacteristicsId == characteristic.Id);
+
+                        var featureValue = featureItem != null ? _unitOfWork.GetRepository<Feature>().Get(featureItem.FeatureId).Name : "";
+                        csv.WriteField(featureValue);
+                    }
+                    csv.NextRecord();
+                }
+
+                writer.Flush();
+                return memoryStream.ToArray();
+            }
         }
 
         public IEnumerable<ItemRespond> GetAll()

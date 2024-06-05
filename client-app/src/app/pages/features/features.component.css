@@ -11,7 +11,11 @@
       width: 15%;
     }
   }
-  
+  .button-space {
+    margin-right: 15px; /* Регулируйте значение по необходимости */
+}
+  .mat-mdc-unelevated-button.mat-warn {
+    --mdc-filled-button-container-color: #d24f45;}
   .action {
     display: flex;
     position: inherit;
