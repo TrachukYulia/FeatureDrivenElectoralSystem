@@ -30,14 +30,14 @@ namespace BLL.Services
             int iteration = 0;
             int numberOfIterationToStop = 0;
             int numberToStop = 10;
-            var prevMinUseful = CounterOfUsefulPopulation(population).Min();
+            var prevMinUseful = CountOfCostPopulation(population).Min();
             while (true)
             {
                 SelectParents(population, out firstParent, out secondParent);
-                CrossingOver(matrix, firstParent, secondParent, out firstChild, out secondChild);
+                Crossover(matrix, firstParent, secondParent, out firstChild, out secondChild);
                 (firstChild, secondChild) = Mutation(matrix, firstChild, secondChild);
                 population = UpdatePopulation(population, firstChild, secondChild);
-                var currentMinUseful = CounterOfUsefulPopulation(population).Min();
+                var currentMinUseful = CountOfCostPopulation(population).Min();
                 if (currentMinUseful == prevMinUseful)
                     numberOfIterationToStop++;
                 else
@@ -46,7 +46,7 @@ namespace BLL.Services
                     break;
                 iteration++;
             }
-            int min_index = IndexOfMin(CounterOfUsefulPopulation(population));
+            int min_index = IndexOfMin(CountOfCostPopulation(population));
             int[] the_best_individ = GetRow(population, min_index);
             List<int> indexOfItems = new List<int>();
 
@@ -68,7 +68,7 @@ namespace BLL.Services
             int iteration = 0;
             int numberOfIterationToStop = 0;
             int numberToStop = 10;
-            var prevMinUseful = CounterOfUsefulPopulation(population).Min();
+            var prevMinUseful = CountOfCostPopulation(population).Min();
             while (true)
             {
                 Console.WriteLine($"Iteration: {iteration} ");
@@ -81,7 +81,7 @@ namespace BLL.Services
                 PrintArray(secondParent);
                 Console.WriteLine();
 
-                CrossingOver(matrix, firstParent, secondParent, out firstChild, out secondChild);
+                Crossover(matrix, firstParent, secondParent, out firstChild, out secondChild);
                 Console.WriteLine("Get a childs:");
                 Console.WriteLine("First child");
                 PrintArray(firstChild);
@@ -101,9 +101,9 @@ namespace BLL.Services
                 newPopulation = UpdatePopulation(population, firstChild, secondChild);
                 PrintMatrix(newPopulation);
                 Console.WriteLine("Useful:");
-                PrintArray(CounterOfUsefulPopulation(newPopulation));
+                PrintArray(CountOfCostPopulation(newPopulation));
 
-                var currentMinUseful = CounterOfUsefulPopulation(newPopulation).Min();
+                var currentMinUseful = CountOfCostPopulation(newPopulation).Min();
                 if (currentMinUseful == prevMinUseful)
                     numberOfIterationToStop++;
                 else
@@ -112,12 +112,12 @@ namespace BLL.Services
                     break;
                 iteration++;
             }
-            int min_index = IndexOfMin(CounterOfUsefulPopulation(population));
+            int min_index = IndexOfMin(CountOfCostPopulation(population));
             int[] the_best_individ = GetRow(population, min_index);
             List<int> indexOfItems = new List<int>();
             Console.WriteLine("The best individ");
             PrintArray(the_best_individ);
-            Console.WriteLine($"The best individ GF: {CounterOfUsefulOfIndivid(the_best_individ)}");
+            Console.WriteLine($"The best individ GF: {CountOfCostIndivid(the_best_individ)}");
             for (int i = 0; i < the_best_individ.Length; i++)
             {
                 if (the_best_individ[i] == 1)
@@ -162,15 +162,13 @@ namespace BLL.Services
         {
             Random random = new Random();
 
-            // Выбор первого родителя
             int firstParentIndex = random.Next(population.GetLength(0));
             firstParent = GetRow(population, firstParentIndex);
-            // Выбор второго родителя
             int secondParentIndex;
             do
             {
                 secondParentIndex = random.Next(population.GetLength(0));
-            } while (secondParentIndex == firstParentIndex); // Повторяем, пока индекс не будет отличаться от первого родителя
+            } while (secondParentIndex == firstParentIndex); 
 
             secondParent = GetRow(population, secondParentIndex);
         }
@@ -178,7 +176,6 @@ namespace BLL.Services
         {
             Random random = new Random();
 
-            // Выбор случайного ребенка для мутации
             int child_index = random.Next(2);
             int mutating_point = random.Next(first_child.Length);
             Console.WriteLine("Mutation  point" + mutating_point);
@@ -199,7 +196,7 @@ namespace BLL.Services
             return (first_child, second_child);
         }
 
-        static void CrossingOver(int[,] matrix, int[] firstParent, int[] secondParent, out int[] firstChild, out int[] secondChild)
+        static void Crossover(int[,] matrix, int[] firstParent, int[] secondParent, out int[] firstChild, out int[] secondChild)
         {
             Random random = new Random();
 
@@ -209,14 +206,12 @@ namespace BLL.Services
             firstChild = new int[firstParent.Length];
             secondChild = new int[firstParent.Length];
 
-            // Копируем элементы до точки пересечения
             for (int i = 0; i <= crossingPoint; i++)
             {
                 firstChild[i] = firstParent[i];
                 secondChild[i] = secondParent[i];
             }
 
-            // Копируем элементы после точки пересечения
             for (int i = crossingPoint + 1; i < firstParent.Length; i++)
             {
                 firstChild[i] = secondParent[i];
@@ -251,14 +246,11 @@ namespace BLL.Services
             PrintMatrix(population);
             for (int i = 0; i < rows; i++)
             {
-                //Console.WriteLine($"Check covering of sign per individ: {i}");
-                //tempCoveringSign = GetCoveredSign(matrix, GetRow(population, i));
-                //PrintArray(tempCoveringSign);
+              
                 Console.WriteLine($"Check condition and retrieve true individ: {i}");
                 tempIndivid = CheckCondition(matrix, GetRow(population, i));
                 PrintArray(tempIndivid);
                 flag = false;
-                //Проверяем, есть ли одинаковые индивиды
                 while (!flag)
                 {
                     for (int index = 0; index < population.GetLength(0); index++)
@@ -365,11 +357,11 @@ namespace BLL.Services
             if (!first_child_exists)
             {
                 // Шукаємо особину з найбільшим значенням корисності
-                int max_useful_index = IndexOfMax(CounterOfUsefulPopulation(population));
+                int max_useful_index = IndexOfMax(CountOfCostPopulation(population));
                 int[] max_useful_individ = GetRow(population, max_useful_index);
 
                 // Якщо є значення корисності більше ніж у нащадка
-                if (CounterOfUsefulOfIndivid(max_useful_individ) > CounterOfUsefulOfIndivid(firstChild))
+                if (CountOfCostIndivid(max_useful_individ) > CountOfCostIndivid(firstChild))
                 {
                     // Додаємо нащадка до популяції замість особини із найбільшим значенням корисності
                     population = SetRow(population, max_useful_index, firstChild);
@@ -378,17 +370,17 @@ namespace BLL.Services
 
             if (!second_child_exists)
             {
-                int max_useful_index = IndexOfMax(CounterOfUsefulPopulation(population));
+                int max_useful_index = IndexOfMax(CountOfCostPopulation(population));
                 int[] max_useful_individ = GetRow(population, max_useful_index);
 
-                if (CounterOfUsefulOfIndivid(max_useful_individ) > CounterOfUsefulOfIndivid(secondChild))
+                if (CountOfCostIndivid(max_useful_individ) > CountOfCostIndivid(secondChild))
                 {
                     population = SetRow(population, max_useful_index, secondChild);
                 }
             }
             return population;
         }
-        static int[] CounterOfUsefulPopulation(int[,] population)
+        static int[] CountOfCostPopulation(int[,] population)
         {
             int[] array_of_useful = new int[population.GetLength(0)];
             for (int i = 0; i < population.GetLength(0); i++)
@@ -402,7 +394,7 @@ namespace BLL.Services
             }
             return array_of_useful;
         }
-        static int CounterOfUsefulOfIndivid(int[] individ)
+        static int CountOfCostIndivid(int[] individ)
         {
             int useful = individ.Sum();
             return useful;
@@ -489,7 +481,6 @@ namespace BLL.Services
 
             if (individ.All(x => x == 1))
             {
-                // Заполнить array_of_sign единицами
                 for (int i = 0; i < array_of_sign.Length; i++)
                 {
                     array_of_sign[i] = 1;
@@ -498,7 +489,6 @@ namespace BLL.Services
             else
             {
                 int counter = 0;
-                // Заполнить array_of_sign в соответствии с текущим алгоритмом
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
                     for (int i = 0; i < matrix.GetLength(0); i++)
@@ -590,30 +580,5 @@ namespace BLL.Services
 
             return matrix;
         }
-        static int[,] CreateMatrix(int rows, int cols)
-        {
-            //int rows = matrix.GetLength(0);
-            //int cols = matrix.GetLength(1);
-            int k = 0;
-            int[,] array = new int[,]
-            {
-        { 1,0,0,1,0,1,0 },
-        { 0,1,0,0,1,0,1 },
-        { 1,0,1,0,0,1,0 },
-        { 0,1,0,1,0,0,1 },
-        { 1,0,0,1,0,1,0 },
-        { 1,0,0,1,1,0,0},
-            };
-
-            //for (int i = 0; i < array.GetLength(0); i++)
-            //{
-            //    for (int j = 0; j < array.GetLength(1); j++)
-            //    {
-            //        array[i, j] = k;
-            //    }
-            //}
-            return array;
-        }
-
     }
 }

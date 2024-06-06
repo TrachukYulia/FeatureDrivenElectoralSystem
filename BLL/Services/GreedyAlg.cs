@@ -62,25 +62,28 @@ public class GreedyAlg
 
             return matrix;
         }
-        public int[] Solve()
+        public int[] GreedySolution()
         {
+            //first item choosed by random
             Random random = new Random();
             int itemIndex = random.Next(_items.Length);
             AddItem(_items[itemIndex]);
 
-            while (_features.Length != 0)
+            while (_features.Length != 0) // untill all features wont be cover
             {
-                int[] featureNums = new int[_items.Length];
+                
+                int[] featureNums = new int[_items.Length]; 
+                //count of all features, that covered every item in array
                 for (int i = 0; i < _items.Length; i++)
                 {
-                    int[] f = CheckFeatures(_items[i]);
-                    featureNums[i] = CountFeatures(f);
+                    int[] f = CheckFeatures(_items[i]); 
+                    featureNums[i] = CountFeaturesToCover(f);
                 }
-
+                // choose item, that cover the most amount of feature
                 int itemNum = Array.IndexOf(featureNums, featureNums.Max());
                 AddItem(_items[itemNum]);
             }
-
+            //select Items
             int maxResult = _result.Max();
             int[] selectedItems = Enumerable.Range(0, _result.Length)
                                              .Where(i => _result[i] == maxResult)
@@ -96,7 +99,7 @@ public class GreedyAlg
                              .ToArray();
         }
 
-        private int CountFeatures(int[] fList)
+        private int CountFeaturesToCover(int[] fList)
         {
             int num = 0;
             foreach (var i in fList)

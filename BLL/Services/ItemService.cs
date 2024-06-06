@@ -89,20 +89,7 @@ namespace BLL.Services
  
             return _mapper.Map<IEnumerable<ItemRespond>>(items);
         }
-        //public File ExportToCsv(IEnumerable<ItemRespond> items, string fileName)
-        //{
-        //    using (var memoryStream = new MemoryStream())
-        //    using (var writer = new StreamWriter(memoryStream))
-        //    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-        //    {
-        //        csv.WriteRecords(items);
 
-        //        writer.Flush();
-        //        memoryStream.Position = 0;
-
-        //        return Microsoft.AspNetCore.Mvc.ControllerBase.File(memoryStream, "application/octet-stream", fileName);
-        //    }
-        //}
         public IEnumerable<ItemRespond> GetGeneticSolve(List<int> features)
         {
             var items = _unitOfWork.GetRepository<Item>().GetAll();
@@ -136,13 +123,10 @@ namespace BLL.Services
          
             List<Item> filteredItems = new List<Item>();
 
-            // Пройдите по индексам элементов
             foreach (var index in indexOfItems)
             {
-                // Проверьте, существует ли элемент с таким индексом в списке items
                 if (index < items.Count())
                 {
-                    // Если элемент существует, добавьте его в отфильтрованный список
                     filteredItems.Add(items.ElementAt(index));
                 }
             }
@@ -161,29 +145,23 @@ namespace BLL.Services
                 throw new NotFoundException("You did not select any feature");
             int[,] matrix = new int[items.Count(), features.Count()];
 
-            // Заполнение матрицы
             for (int i = 0; i < items.Count(); i++)
             {
                 for (int j = 0; j < features.Count(); j++)
                 {
-                    // Проверяем, есть ли у текущего элемента данная характеристика
                        matrix[i, j] = items.ElementAt(i).Features.Any(f => f.Id == features.ElementAt(j)) ? 1 : 0;
-                  //  matrix[i, j] = featureItems.Any(fi => fi.ItemId == items.ElementAt(i).Id && fi.FeatureId == features.ElementAt(j)) ? 1 : 0;
 
                 }
             }
             var greedyAlg = new GreedyAlg(matrix);
-            var indexOfItems = greedyAlg.Solve();
+            var indexOfItems = greedyAlg.GreedySolution();
 
             List<Item> filteredItems = new List<Item>();
 
-            // Пройдите по индексам элементов
             foreach (var index in indexOfItems)
             {
-                // Проверьте, существует ли элемент с таким индексом в списке items
                 if (index < items.Count())
                 {
-                    // Если элемент существует, добавьте его в отфильтрованный список
                     filteredItems.Add(items.ElementAt(index));
                 }
             }
@@ -221,11 +199,6 @@ namespace BLL.Services
             _unitOfWork.GetRepository<Item>().Update(item);
 
             _unitOfWork.Save();
-        }
-        public void GetGeneticAlgo ()
-        {
-            Console.WriteLine("Hello world");
-
         }
         public void Delete(int id)
         {
