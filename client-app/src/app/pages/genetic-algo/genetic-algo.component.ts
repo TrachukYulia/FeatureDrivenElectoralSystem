@@ -23,6 +23,7 @@ import { Subscription } from 'rxjs';
 import { FeatureQueryService } from '../sevrices/feature-query.service';
 import { saveAs } from 'file-saver'
 
+
 @Component({
   selector: 'app-genetic-algo',
   standalone: true,

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';

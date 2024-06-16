@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.Services
+namespace BLL.ServicesBLL
 {
     public class GeneticAlgo
     {
@@ -172,7 +172,7 @@ namespace BLL.Services
 
             secondParent = GetRow(population, secondParentIndex);
         }
-        static (int[], int[]) Mutation(int[,] parlamenters, int[] first_child, int[] second_child)
+        static (int[], int[]) Mutation(int[,] matrix, int[] first_child, int[] second_child)
         {
             Random random = new Random();
 
@@ -184,13 +184,13 @@ namespace BLL.Services
             {
                 Console.WriteLine("Mutation first child");
                 first_child[mutating_point] = (first_child[mutating_point] == 1) ? 0 : 1;
-                first_child = CheckCondition(parlamenters, first_child);
+                first_child = CheckCondition(matrix, first_child);
             }
             else
             {
                 Console.WriteLine("Mutation second child");
                 second_child[mutating_point] = (second_child[mutating_point] == 1) ? 0 : 1;
-                second_child = CheckCondition(parlamenters, second_child);
+                second_child = CheckCondition(matrix, second_child);
             }
 
             return (first_child, second_child);

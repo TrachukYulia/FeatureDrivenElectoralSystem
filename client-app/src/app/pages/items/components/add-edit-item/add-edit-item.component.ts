@@ -72,35 +72,53 @@ export class AddEditItemComponent implements OnInit {
   onFormSubmit() {
     console.log(this.itemForm)
     if (this.itemForm.valid) {
-      console.log(this.itemForm.value.name)
-      console.log(this.itemForm.value.featureItem)
+      console.log("name of feature item to add", this.itemForm.value.name)
 
-      const newItem = {
+   
+      const newItem: Item = {
         name: this.itemForm.value.name,
-        featureItem: this.featureItems
+        featureItem: []
       };
-     // this.data.name = newItem.name;
-      for (const characteristic of this.characteristics) {
-        // Находим запись в selectedFeatures, соответствующую текущей характеристике
-        const selectedFeature = this.selectedFeatures.find(item => item.characteristicId === characteristic.id);
+      console.log("this.featureItems", this.featureItems)
 
-        // Если запись найдена, добавляем ее featureId в массив featureItem объекта newItem
-        if (selectedFeature) {
+    // const newItem = {
+    //   name: this.itemForm.value.name,
+    //   featureItem: this.featureItems
+    // };
+    // for (const characteristic of this.characteristics) {
+    //   // Находим запись в selectedFeatures, соответствующую текущей характеристике
+    //   const selectedFeature = this.selectedFeatures.find(item => item.characteristicId === characteristic.id);
+
+    //   // Если запись найдена, добавляем ее featureId в массив featureItem объекта newItem
+    //   if (selectedFeature) {
+    //     newItem.featureItem.push({
+    //       featureId: selectedFeature.featureId
+    //     });
+    //   }
+    // }
+
+    for (const characteristic of this.characteristics) {
+    const selectedFeature = this.itemForm.value[characteristic.name];
+    const selectedFeatureIds = selectedFeature.map( (x: { id: any; }) => x.id);
+    console.log("selectedFeatureIds ----------------", selectedFeature)
+
+      if (selectedFeatureIds) {
+          console.log("----------------", selectedFeatureIds)
+          selectedFeatureIds.forEach((featureId: number) => {
           newItem.featureItem.push({
-            featureId: selectedFeature.featureId
+            featureId: featureId
           });
-        }
+        });
       }
-      console.log(newItem)
-
+    }
+  
+      console.log("newItem", newItem);
       if (this.data) {
        // this.itemForm.patchValue(this.data);
-
         this._itemService.updateItem(this.data.id, newItem).subscribe({
           next: (val: any) => {
             this._coreService.openSnackBar('Item updated successfully!')
             console.log(val);
-          
             this._dialogRef.close(true);
           },
           error: (err: any) => {
@@ -158,18 +176,37 @@ export class AddEditItemComponent implements OnInit {
 
       Object.keys(formValue).forEach(key => {
         const value = formValue[key];
-        if (typeof value === 'object' && value !== null && 'id' in value) {
-          const characteristicId = value.characteristicsId;
-          const featureId = value.id;
-          // Найдем индекс характеристики в массиве selectedFeatures
-          const index = this.selectedFeatures.findIndex(item => item.characteristicId === characteristicId);
-          if (index !== -1) {
-            // Если характеристика уже существует в массиве selectedFeatures, обновим значение featureId
-            this.selectedFeatures[index].featureId = featureId;
-          } else {
-            // Если характеристика еще не существует в массиве selectedFeatures, добавим новую запись
-            this.selectedFeatures.push({ characteristicId, featureId });
-          }
+        // if (typeof value === 'object' && value !== null && 'id' in value) {
+        //   const characteristicId = value.characteristicsId;
+        //   const featureId = value.id;
+        //   // Найдем индекс характеристики в массиве selectedFeatures
+        //   const index = this.selectedFeatures.findIndex(item => item.characteristicId === characteristicId);
+        //   if (index !== -1) {
+        //     // Если характеристика уже существует в массиве selectedFeatures, обновим значение featureId
+        //     this.selectedFeatures[index].featureId = featureId;
+        //   } else {
+        //     // Если характеристика еще не существует в массиве selectedFeatures, добавим новую запись
+        //     this.selectedFeatures.push({ characteristicId, featureId });
+        //   }
+        // }
+        //gpt
+        if (Array.isArray(value)) {
+          value.forEach((featureId: number) => {
+            const characteristic = this.characteristics.find(c => c.name === key);
+            if (characteristic) {
+              const characteristicId = characteristic.id;
+              const existingIndex = this.selectedFeatures.findIndex(sf => sf.characteristicId === characteristicId && sf.featureId === featureId);
+              if (existingIndex !== -1) {
+                this.selectedFeatures[existingIndex].featureId = featureId;
+
+              }
+              else
+              {
+                this.selectedFeatures.push({ characteristicId, featureId });
+
+              }
+            }
+          });
         }
       });
     });

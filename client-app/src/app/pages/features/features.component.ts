@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
@@ -17,9 +18,17 @@ import { CharacteristicsService } from '../sevrices/characteristics.service';
 @Component({
   selector: 'app-features',
   standalone: true,
-  imports: [RouterLink, FormsModule, MatDialogModule,
-    MatButtonModule, MatFormField, MatIcon, ReactiveFormsModule, MatTableModule,
-    MatPaginator, MatPaginatorModule, MatFormFieldModule, MatSnackBarModule, MatSortModule],
+  imports: [   RouterLink,
+    FormsModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSnackBarModule,
+    MatSortModule],
   templateUrl: './features.component.html',
   styleUrl: './features.component.css'
 })

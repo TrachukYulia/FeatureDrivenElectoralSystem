@@ -70,7 +70,7 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
             return File(csvFile, "application/octet-stream", "greedy_items.csv");
         }
         [HttpPost]
-        public ActionResult CreateFesture(ItemRequest itemRequest)
+        public ActionResult CreateItem(ItemRequest itemRequest)
         {
             _itemService.Create(itemRequest);
             return Ok();
@@ -85,7 +85,7 @@ namespace FeatureDrivenElectoralSystemApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateFeature(int id, [FromBody] ItemRequest itemRequest)
+        public ActionResult UpdateItem(int id, [FromBody] ItemRequest itemRequest)
         {
             _itemService.Update(itemRequest, id);
 

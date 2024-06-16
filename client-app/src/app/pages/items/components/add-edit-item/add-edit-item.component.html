@@ -17,9 +17,9 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">{{ characteristic.name }} </h1>
         <mat-form-field appearance="fill">
           <mat-label>{{ characteristic.name }}</mat-label>
-          <mat-select formControlName="{{characteristic.name}}">
+          <mat-select formControlName="{{characteristic.name}}" multiple>
             <mat-option *ngFor="let feature of getfeaturesForCharacteristic2(characteristic.name) " 
-            [value]="feature">
+            [value]="feature" >
               {{ feature.featureName }}
             </mat-option>
           </mat-select>

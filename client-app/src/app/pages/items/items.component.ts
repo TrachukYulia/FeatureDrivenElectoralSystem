@@ -82,28 +82,17 @@ export class ItemsComponent implements OnInit{
       error: console.log,
     })
   }
+
   getItemValue(item: any, characteristicId: number): string {
-      const featureItem = item.featureItem.map((x: { featureId: any; })=>x.featureId);
-      const matchingFeatureIds = featureItem.filter((featureId: any) => {
-        const a = this.features.some((feature: { characteristicsId: number; id: any; }) => feature.characteristicsId === characteristicId && feature.id === featureId);
-        this.features.forEach((f: { characteristicsId: number; id: any; })=>{
-          if(f.characteristicsId === characteristicId && f.id === featureId)
-            console.log('characteristicsId', characteristicId);
-        })
-        return a; 
-      });
-      if (matchingFeatureIds.length = 1) {
-        const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
-        return matchingFeachure.featureName;
-      }
-      else if (matchingFeatureIds.length > 1) 
-        {
-          const matchingFeachure = this.features.find((f: { id: any; })=> f.id == matchingFeatureIds);
-          return matchingFeachure[0].featureName;
-        }
-      else {
-        return '-';
-      } 
+    const featureIds = item.featureItem.map((x: { featureId: any; })=>x.featureId);
+    const matchingFeatures = this.features
+      .filter((f: any) => f.characteristicsId === characteristicId && featureIds.includes(f.id))
+      .map((f: any) => f.featureName);
+    if (matchingFeatures.length > 0) {
+      return matchingFeatures.join(', '); 
+    } else {
+      return '-'; 
+    }
   }
   loadFeatures() {
     this._featureService.getFeatures().subscribe({

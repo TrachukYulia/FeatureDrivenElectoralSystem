@@ -28,24 +28,24 @@
     <Position X="6.75" Y="4.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="DAL.Models.Characteristic" Collapsed="true">
+  <Class Name="DAL.Models.Characteristic">
     <Position X="8" Y="5.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="DAL.Models.Feature" Collapsed="true">
+  <Class Name="DAL.Models.Feature">
     <Position X="10.25" Y="5.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="DAL.Models.FeatureItem" Collapsed="true">
+  <Class Name="DAL.Models.FeatureItem">
     <Position X="3.5" Y="5.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="DAL.Models.Item" Collapsed="true">
+  <Class Name="DAL.Models.Item">
     <Position X="5.75" Y="5.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="DAL.Repository.BaseRepository&lt;T&gt;" Collapsed="true">
-    <Position X="6.75" Y="1.25" Width="1.5" />
+    <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" />
   </Class>
@@ -70,33 +70,178 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DAL.Repository.UnitOfWork" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.75" Y="3.25" Width="1.5" />
+    <Position X="14.5" Y="3.5" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Interface Name="DAL.Interfaces.ICharacteristicRepository">
+  <Class Name="BLL.DTO.ItemRequest" Collapsed="true">
+    <Position X="23.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>DTO\ItemRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.CharacteristicNameRespond" Collapsed="true">
+    <Position X="21.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\CharacteristicNameRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.CharacteristicRequest" Collapsed="true">
+    <Position X="23.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\CharacteristicRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.CharacteristicRespond" Collapsed="true">
+    <Position X="25.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\CharacteristicRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.FeatureModel" Collapsed="true">
+    <Position X="27" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAACAAYAAAAAAAAAA=</HashCode>
+      <FileName>DTO\FeatureModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.FeatureNameRespond" Collapsed="true">
+    <Position X="21.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\FeatureNameRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.FeatureRequest" Collapsed="true">
+    <Position X="23.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\FeatureRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.FeatureRespond" Collapsed="true">
+    <Position X="25.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DTO\FeatureRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.FeatureWithCharIdRespond" Collapsed="true">
+    <Position X="27" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAACAAYAAAAAAAAAA=</HashCode>
+      <FileName>DTO\FeatureWithCharId.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.ItemFeatureRequest" Collapsed="true">
+    <Position X="21.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\ItemFeatureRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.ItemRespond" Collapsed="true">
+    <Position X="25.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>DTO\ItemRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.ItemWithFeatureRequest" Collapsed="true">
+    <Position X="27" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DTO\ItemWithFeatureRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.DTO.ItemWithFeatureRespond" Collapsed="true">
+    <Position X="21.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>DTO\ItemWithFeatureRespond.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BLL.Services.ItemService" Collapsed="true">
+    <Position X="26.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAABAAoCBAAAACAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Services\ItemService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLL.Services.FeatureService" Collapsed="true">
+    <Position X="24.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIAAAAAAABAAgABAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Services\FeatureService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BLL.ServicesBLL.GeneticAlgo" Collapsed="true">
+    <Position X="22.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEFKACAAAAIAAAAIAIQIICBCAABAAABEhAAAAABAEAk=</HashCode>
+      <FileName>Services\GeneticAlgo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="DAL.Interfaces.ICharacteristicRepository" Collapsed="true">
     <Position X="13" Y="7.5" Width="1.5" />
     <TypeIdentifier />
   </Interface>
-  <Interface Name="DAL.Interfaces.IFeatureItemRepository">
+  <Interface Name="DAL.Interfaces.IFeatureItemRepository" Collapsed="true">
     <Position X="15.25" Y="7.5" Width="1.5" />
     <TypeIdentifier />
   </Interface>
-  <Interface Name="DAL.Interfaces.IFeatureRepository">
+  <Interface Name="DAL.Interfaces.IFeatureRepository" Collapsed="true">
     <Position X="17.5" Y="7.5" Width="1.5" />
     <TypeIdentifier />
   </Interface>
-  <Interface Name="DAL.Interfaces.IItemRepository">
+  <Interface Name="DAL.Interfaces.IItemRepository" Collapsed="true">
     <Position X="19.75" Y="7.5" Width="1.5" />
     <TypeIdentifier />
   </Interface>
   <Interface Name="DAL.Interfaces.IRepository&lt;T&gt;">
-    <Position X="16.25" Y="4.5" Width="1.5" />
+    <Position X="16.25" Y="4.75" Width="1.5" />
     <TypeIdentifier />
   </Interface>
-  <Interface Name="DAL.Interfaces.IUnitOfWork" Collapsed="true">
-    <Position X="12.75" Y="4.5" Width="1.5" />
+  <Interface Name="DAL.Interfaces.IUnitOfWork">
+    <Position X="12.75" Y="3.5" Width="1.5" />
     <TypeIdentifier />
+  </Interface>
+  <Interface Name="BLL.Interfaces.ICharacteristicService" Collapsed="true">
+    <Position X="25.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ICharacteristicService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BLL.Interfaces.IFeatureService" Collapsed="true">
+    <Position X="27.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIAAAAAAABAAAAAAAAAAAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFeatureService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BLL.Interfaces.IItemService">
+    <Position X="30.5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAABAAICAAAAACAEAAEAAAgAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IItemService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BLL.Interfaces.IService" Collapsed="true">
+    <Position X="27.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Interfaces\IService.cs</FileName>
+    </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
