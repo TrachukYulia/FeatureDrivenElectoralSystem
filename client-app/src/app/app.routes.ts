@@ -20,7 +20,7 @@ export const routes: Routes = [
     },
     {
         path:'electrocaldriven',
-        component: GeneticAlgoComponent
+        component: DrivenElectrocalSystemComponent
     },
     {
         path:'electrocalsystem',

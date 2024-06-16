@@ -111,7 +111,6 @@ export class AddEditItemComponent implements OnInit {
         });
       }
     }
-  
       console.log("newItem", newItem);
       if (this.data) {
        // this.itemForm.patchValue(this.data);

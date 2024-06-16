@@ -66,3 +66,16 @@ html {
 .selectFeatures{
     margin-top: 15px;
 }
+.characteristic-box {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .characteristic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
